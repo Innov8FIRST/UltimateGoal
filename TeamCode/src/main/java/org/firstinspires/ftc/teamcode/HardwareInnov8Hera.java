@@ -40,6 +40,7 @@ public class HardwareInnov8Hera {
 
     public Servo ringPusher = null;
     public Servo wobbleDropper = null;
+    public Servo wobbleGrabber = null;
 
     public BNO055IMU imu;
     public TouchSensor ringTouchSensor = null;
@@ -76,6 +77,7 @@ public class HardwareInnov8Hera {
 
         ringPusher = this.hwMap.get(Servo.class, "ringPusher");
         wobbleDropper = this.hwMap.get(Servo.class, "wobbleDropper");
+        wobbleGrabber = this.hwMap.get(Servo.class, "wobbleGrabber");
 
         ringTouchSensor = this.hwMap.get(TouchSensor.class, "ringTouchMotor");
 
@@ -89,7 +91,8 @@ public class HardwareInnov8Hera {
         intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
         ringPusher.setPosition(0.535);
-        wobbleDropper.setPosition(0);
+        wobbleDropper.setPosition(.75);
+        wobbleGrabber.setPosition(0);
 
 
         // Set all motors to zero power

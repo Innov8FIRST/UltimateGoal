@@ -57,6 +57,18 @@ public class Shooter {
             shooterState = ShootState.SETTING_CHILL_TIME;
         }
 
+        if (gamepad1.a) {
+            hera.ringPusher.setPosition(0);
+        }
+
+        if (gamepad1.b) {
+            hera.ringPusher.setPosition(.5);
+        }
+
+        if (gamepad1.y) {
+            hera.ringPusher.setPosition(1);
+        }
+
 
         switch (shooterState) {
             case LOADING:
