@@ -37,6 +37,7 @@ public class HardwareInnov8Hera {
     public DcMotor shooterMotor = null;
     public DcMotor conveyerMotor = null;
     public DcMotor intakeMotor = null;
+    public DcMotor wobbleArm = null;
 
     public Servo ringPusher = null;
     public Servo wobbleDropper = null;
@@ -73,6 +74,7 @@ public class HardwareInnov8Hera {
         shooterMotor = this.hwMap.get(DcMotor.class, "shooterMotor");
         conveyerMotor = this.hwMap.get(DcMotor.class, "conveyerMotor");
         intakeMotor = this.hwMap.get(DcMotor.class, "intakeMotor");
+        wobbleArm = this.hwMap.get(DcMotor.class, "wobbleArm");
 
 
         ringPusher = this.hwMap.get(Servo.class, "ringPusher");
@@ -89,10 +91,12 @@ public class HardwareInnov8Hera {
         shooterMotor.setDirection(DcMotor.Direction.FORWARD);
         conveyerMotor.setDirection(DcMotor.Direction.FORWARD);
         intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        wobbleArm.setDirection(DcMotor.Direction.FORWARD);
 
-        ringPusher.setPosition(0.535);
+        ringPusher.setPosition(0);
         wobbleDropper.setPosition(.75);
         wobbleGrabber.setPosition(0);
+
 
 
         // Set all motors to zero power
@@ -103,6 +107,7 @@ public class HardwareInnov8Hera {
         shooterMotor.setPower(0);
         conveyerMotor.setPower(0);
         intakeMotor.setPower(0);
+        wobbleArm.setPower(0);
 
 
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -110,6 +115,7 @@ public class HardwareInnov8Hera {
         motorTwo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorThree.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFour.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wobbleArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         imu = this.hwMap.get(BNO055IMU.class, "imu");

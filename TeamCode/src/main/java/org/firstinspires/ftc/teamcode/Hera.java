@@ -55,6 +55,7 @@ public class Hera {
             shooter.teleopUpdate(gamepad1, gamepad2);
             conveyer.teleopUpdate(gamepad1, gamepad2);
             intake.teleopUpdate(gamepad1, gamepad2);
+            wobble.teleopUpdate(gamepad1, gamepad2);
             this.telemetry.update();
         }
     }

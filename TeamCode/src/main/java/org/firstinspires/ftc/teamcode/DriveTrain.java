@@ -217,6 +217,8 @@ public class DriveTrain {
         double x = gamepad1.left_stick_x * 1.5; // 1.5 is to counteract imperfect strafing
         double rx = gamepad1.right_stick_x;
 
+        showData("rx value","" + rx);
+
         hera.motorOne.setPower(y + x + rx);
         hera.motorTwo.setPower(y - x + rx);
         hera.motorThree.setPower(y - x - rx);
