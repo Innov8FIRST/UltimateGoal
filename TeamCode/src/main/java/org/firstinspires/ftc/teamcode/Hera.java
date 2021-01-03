@@ -71,7 +71,7 @@ public class Hera {
     public void ringSense() {
 
         this.hwmap.shooterMotor.setPower(.8);
-        if (openCV.getRingNumber() == RingPosition.ONE) {
+        if (openCV.getRingNumber() == RingPosition.ONE && this.opMode.opModeIsActive()) {
             driveTrain.goForward(24);
             driveTrain.goLeft(20);
             // Go to launch line
@@ -84,7 +84,7 @@ public class Hera {
             // Park over line
             driveTrain.goBackward(28);
             showData("Ring Position", "One");
-        } else if (openCV.getRingNumber() == RingPosition.FOUR) {
+        } else if (openCV.getRingNumber() == RingPosition.FOUR && this.opMode.opModeIsActive()) {
             driveTrain.goForward(24);
             driveTrain.goLeft(20);
             // Go to launch line

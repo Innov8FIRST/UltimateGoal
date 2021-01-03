@@ -66,14 +66,14 @@ public class DriveTrain {
             angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             error = startingOrientation - angles.firstAngle;
             double powerChanger = (error/100)+1;
-            if(error < 0){
+            if(error < 0 && this.opMode.opModeIsActive()){
                 hera.motorThree.setPower(wheelThreePower * powerChanger);
                 hera.motorFour.setPower(wheelFourPower * powerChanger);
                 double increasePower = (Math.abs(error)/100) + 1;
                 hera.motorOne.setPower(wheelOnePower * increasePower);
                 hera.motorTwo.setPower(wheelTwoPower * increasePower);
             }
-            if(error > 0){
+            if(error > 0 && this.opMode.opModeIsActive()){
                 hera.motorThree.setPower(wheelThreePower * powerChanger);
                 hera.motorFour.setPower(wheelFourPower * powerChanger);
                 double decreasePower = 1 - (error/100);
