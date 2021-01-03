@@ -76,6 +76,7 @@ public class Hera {
                 driveTrain.goLeft(20);
                 // Go to launch line
                 driveTrain.goForward(42);
+                driveTrain.turn(180);
                 shooter.shoot();
                 // Drive to 2nd square
                 driveTrain.goForward(30);
