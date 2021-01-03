@@ -62,8 +62,8 @@ public class Hera {
     
 
     public void forwardTurn() {
-        while(this.opMode.opModeIsActive()){
-            showData("autnonomous status", "autonomous is working");
+        if(this.opMode.opModeIsActive()){
+            this.driveTrain.goForward(400);
         }
 //        driveTrain.turn(-90);
 //        driveTrain.goForward(30);
