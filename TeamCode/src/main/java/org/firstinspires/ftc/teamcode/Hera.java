@@ -69,14 +69,11 @@ public class Hera {
 //        driveTrain.goForward(30);
     }
 
-    public void ringSense() {
+    public void autoShoot() {
         if(this.opMode.opModeIsActive()) {
             this.hwmap.shooterMotor.setPower(.8);
             if (openCV.getRingNumber() == RingPosition.ONE) {
                 driveTrain.goForward(24);
-                driveTrain.goLeft(20);
-                // Go to launch line
-                driveTrain.goForward(42);
                 driveTrain.turn(180);
                 shooter.shoot();
                 // Drive to 2nd square
@@ -88,9 +85,6 @@ public class Hera {
                 showData("Ring Position", "One");
             } else if (openCV.getRingNumber() == RingPosition.FOUR) {
                 driveTrain.goForward(24);
-                driveTrain.goLeft(20);
-                // Go to launch line
-                driveTrain.goForward(42);
                 shooter.shoot();
                 // Drive to 3rd square
                 driveTrain.goForward(54);
@@ -101,9 +95,6 @@ public class Hera {
                 showData("Ring Position", "Four");
             } else {
                 driveTrain.goForward(24);
-                driveTrain.goLeft(20);
-                // Go to launch line
-                driveTrain.goForward(42);
                 shooter.shoot();
                 // Drive to 1st square
                 driveTrain.goForward(26);

@@ -4,14 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(name = "RingSense", group = "Robot")
-public class RingSense extends LinearOpMode
+@Autonomous(name = "AutoShoot", group = "Robot")
+public class AutoShoot extends LinearOpMode
 {
     @Override
     public void runOpMode() throws InterruptedException {
         Hera hera = new Hera(telemetry, hardwareMap, this);
         waitForStart();
-        hera.ringSense();
+        hera.autoShoot();
 
     }
 }
