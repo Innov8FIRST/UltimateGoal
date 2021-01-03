@@ -32,7 +32,7 @@ public class Shooter {
     public void shoot() {
         this.hera.ringPusher.setPosition(RINGPUSHER_SHOOT);
         postShotTime = System.currentTimeMillis() + 1000;
-        while (System.currentTimeMillis() < postShotTime);
+        while (System.currentTimeMillis() < postShotTime && this.opMode.opModeIsActive());
         this.hera.ringPusher.setPosition(RINGPUSHER_LOAD);
         }
 
@@ -55,6 +55,18 @@ public class Shooter {
         if (gamepad1.x) {
             hera.ringPusher.setPosition(RINGPUSHER_SHOOT);
             shooterState = ShootState.SETTING_CHILL_TIME;
+        }
+
+        if (gamepad1.a) {
+            hera.ringPusher.setPosition(0);
+        }
+
+        if (gamepad1.b) {
+            hera.ringPusher.setPosition(.5);
+        }
+
+        if (gamepad1.y) {
+            hera.ringPusher.setPosition(1);
         }
 
 
