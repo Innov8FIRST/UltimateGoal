@@ -21,6 +21,7 @@ public class Hera {
     Intake intake;
     OpenCV openCV;
     Wobble wobble;
+    RingPosition position;
     LinearOpMode opMode;
     Gamepad gamepad1 = new Gamepad();
     Gamepad gamepad2 = new Gamepad();
@@ -69,41 +70,92 @@ public class Hera {
 //        driveTrain.goForward(30);
     }
 
-    public void autoShoot() {
+    public void redAutoShoot() {
+
         if(this.opMode.opModeIsActive()) {
+            RingPosition position = openCV.getRingNumber();
+            long endTime = System.currentTimeMillis() + 1000;
+            while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
+                position = openCV.getRingNumber();
+            }
             this.hwmap.shooterMotor.setPower(.8);
-            if (openCV.getRingNumber() == RingPosition.ONE) {
-                driveTrain.goForward(24);
-                driveTrain.turn(180);
-                shooter.shoot();
+            driveTrain.goForward(10);
+            driveTrain.turn(-160);
+            shooter.shoot();
+            this.opMode.sleep(2000);
+            driveTrain.turn(-20);
+            if (position == RingPosition.ONE) {
                 // Drive to 2nd square
-                driveTrain.goForward(30);
-                driveTrain.goRight(26);
+                driveTrain.goBackward(30);
+                driveTrain.goLeft(26);
                 wobble.drop();
                 // Park over line
-                driveTrain.goBackward(28);
+                driveTrain.goForward(28);
                 showData("Ring Position", "One");
-            } else if (openCV.getRingNumber() == RingPosition.FOUR) {
-                driveTrain.goForward(24);
-                shooter.shoot();
+            } else if (position == RingPosition.FOUR) {
                 // Drive to 3rd square
-                driveTrain.goForward(54);
-                driveTrain.goRight(50);
+                driveTrain.goBackward(54);
+                driveTrain.goLeft(50);
                 wobble.drop();
                 // Park over line
-                driveTrain.goBackward(52);
+                driveTrain.goForward(52);
                 showData("Ring Position", "Four");
             } else {
-                driveTrain.goForward(24);
-                shooter.shoot();
                 // Drive to 1st square
-                driveTrain.goForward(26);
-                driveTrain.goRight(50);
+                driveTrain.goBackward(26);
+                driveTrain.goLeft(50);
                 wobble.drop();
                 // Park over line
-                driveTrain.goBackward(24);
+                driveTrain.goForward(24);
                 showData("Ring Position", "None");
             }
+        }
+    }
+    public void redAutoNoShoot() {
+        if(this.opMode.opModeIsActive()) {
+            position = openCV.getRingNumber();
+            long endTime = System.currentTimeMillis() + 1000;
+            while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
+                position = openCV.getRingNumber();
+            }
+            driveTrain.goForward(10);
+            driveTrain.turn(-180);
+            if (position == RingPosition.ONE) {
+                // Drive to 2nd square
+                driveTrain.goBackward(30);
+                driveTrain.goLeft(26);
+                wobble.drop();
+                // Park over line
+                driveTrain.goForward(28);
+                showData("Ring Position", "One");
+            } else if (position == RingPosition.FOUR) {
+                // Drive to 3rd square
+                driveTrain.goBackward(54);
+                driveTrain.goLeft(50);
+                wobble.drop();
+                // Park over line
+                driveTrain.goForward(52);
+                showData("Ring Position", "Four");
+            } else {
+                // Drive to 1st square
+                driveTrain.goBackward(26);
+                driveTrain.goLeft(50);
+                wobble.drop();
+                // Park over line
+                driveTrain.goForward(24);
+                showData("Ring Position", "None");
+            }
+        }
+    }
+
+    public void parkOnLine(){
+        driveTrain.goForward(7*12);
+    }
+
+    public void redAutoDoubleWobble(){
+        this.redAutoNoShoot();
+        if(position == RingPosition.FOUR){
+            
         }
     }
 
