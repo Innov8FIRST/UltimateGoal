@@ -30,7 +30,7 @@ public class DriveTrain {
     private double wheelTwoRatio = 1;
     private double wheelThreeRatio = 1;
     private double wheelFourRatio = 1;
-    public static double INCH_TO_TICK = (360/6); // The number of encoder ticks per inch for our wheels
+    public static double INCH_TO_TICK = (8640/522); // The number of encoder ticks per inch for our wheels
     public static double SIDE_TICKS_IN_INCH = (360/6); // The number of encoder ticks for one inch while travelling sideways, change later
     public DriveTrain(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {
 
