@@ -73,19 +73,17 @@ public class Hera {
     public void redAutoShoot() {
 
         if(this.opMode.opModeIsActive()) {
+            this.hwmap.shooterMotor.setPower(.8);
             RingPosition position = openCV.getRingNumber();
             long endTime = System.currentTimeMillis() + 1000;
             while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
                 position = openCV.getRingNumber();
             }
-            this.hwmap.shooterMotor.setPower(.7);
             driveTrain.goForward(10);
-            driveTrain.turn(-165);
+            driveTrain.turn(15);
             shooter.shoot();
             this.opMode.sleep(2000);
-            driveTrain.turn(-5);
-            this.opMode.sleep(1500);
-            driveTrain.turn(-10);
+            driveTrain.turn(-15);
             if (position == RingPosition.ONE) {
                 // Drive to 2nd square
                 driveTrain.goBackward(30);
@@ -154,12 +152,6 @@ public class Hera {
         driveTrain.goForward(7*12);
     }
 
-    public void redAutoDoubleWobble(){
-        this.redAutoNoShoot();
-        if(position == RingPosition.FOUR){
-            
-        }
-    }
 
     public void showData(String caption, String value) {
         this.telemetry.addData(caption, value);

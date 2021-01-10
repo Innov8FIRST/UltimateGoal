@@ -141,8 +141,8 @@ public class DriveTrain {
         } else {
             while ((angles.firstAngle < degreesToTurn) && this.opMode.opModeIsActive()) {
                 double generalPower = (degreesToTurn - angles.firstAngle)/(degreesToTurn);
-                if(generalPower < 0.3){
-                    generalPower = 0.3;
+                if(generalPower < 0.5){
+                    generalPower = 0.5;
                 }
                 hera.motorOne.setPower(-generalPower * wheelOnePower);
                 hera.motorTwo.setPower(-generalPower * wheelTwoPower);
