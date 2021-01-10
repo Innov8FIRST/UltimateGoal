@@ -14,9 +14,9 @@ public class Shooter {
     HardwareInnov8Hera hera;
     LinearOpMode opMode;
 
-    public static double RINGPUSHER_LOAD = 0;
-    public static double RINGPUSHER_SHOOT = .75;
-    public double shootPower = .8;
+    public static double RINGPUSHER_LOAD = .6;
+    public static double RINGPUSHER_SHOOT = .05;
+    public double shootPower = .75 ;
     public long postShotTime = 0;
     public boolean shooterMotorIsRunning = false;
     private enum ShootState {LOADING, SHOOTING, SETTING_CHILL_TIME, CHILLING}

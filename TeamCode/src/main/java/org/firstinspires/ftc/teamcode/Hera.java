@@ -78,12 +78,14 @@ public class Hera {
             while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
                 position = openCV.getRingNumber();
             }
-            this.hwmap.shooterMotor.setPower(.8);
+            this.hwmap.shooterMotor.setPower(.7);
             driveTrain.goForward(10);
-            driveTrain.turn(-160);
+            driveTrain.turn(-165);
             shooter.shoot();
             this.opMode.sleep(2000);
-            driveTrain.turn(-20);
+            driveTrain.turn(-5);
+            this.opMode.sleep(1500);
+            driveTrain.turn(-10);
             if (position == RingPosition.ONE) {
                 // Drive to 2nd square
                 driveTrain.goBackward(30);
