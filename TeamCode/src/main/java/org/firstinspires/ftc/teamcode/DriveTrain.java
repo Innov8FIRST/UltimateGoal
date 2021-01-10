@@ -124,24 +124,41 @@ public class DriveTrain {
     public void turn(double degreesToTurn) {
         telemetry.addData("Degrees to Turn: ", degreesToTurn);
         Orientation angles;
-        //test what difference between INTRINSIC and EXTRINSIC is
         angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        degreesToTurn = angles.firstAngle + degreesToTurn;
+        double targetAngle = angles.firstAngle + degreesToTurn;
+        double degreesLeftToTurn;
+        if(targetAngle < -180){
+            targetAngle += 360;
+            double targetToAxis = targetAngle - 180;
+            double startToAxis = 180 + angles.firstAngle;
+            degreesLeftToTurn = targetToAxis + startToAxis;
+            boolean useNewCalc = true;
+        }
+        else if (targetAngle > 180){
+            targetAngle -= 360;
+            double targetToAxis = 180 + targetAngle;
+            double startToAxis = 180;
+        }
+        degreesLeftToTurn = targetAngle - angles.firstAngle;
         if (degreesToTurn < 0) {
-            while ((angles.firstAngle > degreesToTurn) && this.opMode.opModeIsActive()) {
+            while ((degreesLeftToTurn >= 0) && this.opMode.opModeIsActive()) {
                 double generalPower = (degreesToTurn - angles.firstAngle)/(degreesToTurn);
+                if (generalPower < 0.5) {
+                    generalPower = 0.5;
+                }
                 hera.motorOne.setPower(generalPower * wheelOnePower);
                 hera.motorTwo.setPower(generalPower * wheelTwoPower);
                 hera.motorThree.setPower(-generalPower * wheelThreePower);
                 hera.motorFour.setPower(-generalPower * wheelFourPower);
                 angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                degreesLeftToTurn = targetAngle - angles.firstAngle;
                 String turnInfo = "angles: " + angles.firstAngle + ", " + angles.secondAngle + ", " + angles.thirdAngle;
                 showData("Turning", turnInfo);
             }
         } else {
-            while ((angles.firstAngle < degreesToTurn) && this.opMode.opModeIsActive()) {
+            while ((degreesLeftToTurn <= 0) && this.opMode.opModeIsActive()) {
                 double generalPower = (degreesToTurn - angles.firstAngle)/(degreesToTurn);
-                if(generalPower < 0.5){
+                if (generalPower < 0.5) {
                     generalPower = 0.5;
                 }
                 hera.motorOne.setPower(-generalPower * wheelOnePower);
@@ -149,6 +166,7 @@ public class DriveTrain {
                 hera.motorThree.setPower(generalPower * wheelThreePower);
                 hera.motorFour.setPower(generalPower * wheelFourPower);
                 angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                degreesLeftToTurn = targetAngle - angles.firstAngle;
                 telemetry.addData("degreesToTurn", degreesToTurn);
                 telemetry.update();
                 String turnInfo = "angles: " + angles.firstAngle + ", " + angles.secondAngle + ", " + angles.thirdAngle;
@@ -161,6 +179,8 @@ public class DriveTrain {
     public void goLeft(double inches) {
         double startPosition = 0;
         double endPosition = 0;
+
+
         showData("DRIVE_TRAIN_CAPTION", "Robot is moving left");
         startPosition = hera.motorOne.getCurrentPosition();
         endPosition = startPosition - (inches * SIDE_TICKS_IN_INCH); // How far you need to travel
