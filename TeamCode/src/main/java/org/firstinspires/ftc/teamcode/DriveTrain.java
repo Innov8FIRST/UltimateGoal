@@ -125,20 +125,23 @@ public class DriveTrain {
         telemetry.addData("Degrees to Turn: ", degreesToTurn);
         Orientation angles;
         angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double currentAngleIn360;
+        if(angles.firstAngle <=0){
+            currentAngleIn360 = angles.firstAngle + 360;
+        }
+        else{
+            currentAngleIn360 = angles.firstAngle;
+        }
         double targetAngle = angles.firstAngle + degreesToTurn;
         double degreesLeftToTurn;
-        if(targetAngle < -180){
-            targetAngle += 360;
-            double targetToAxis = targetAngle - 180;
-            double startToAxis = 180 + angles.firstAngle;
-            degreesLeftToTurn = targetToAxis + startToAxis;
-            boolean useNewCalc = true;
+        double distanceFromJump;
+        if (currentAngleIn360 > 0 && currentAngleIn360 <= 180) {
+            distanceFromJump = currentAngleIn360;
         }
-        else if (targetAngle > 180){
-            targetAngle -= 360;
-            double targetToAxis = 180 + targetAngle;
-            double startToAxis = 180;
+        else if (currentAngleIn360 > 180 && currentAngleIn360 <= 360) {
+            distanceFromJump = 360 - currentAngleIn360;
         }
+        //
         degreesLeftToTurn = targetAngle - angles.firstAngle;
         if (degreesToTurn < 0) {
             while ((degreesLeftToTurn >= 0) && this.opMode.opModeIsActive()) {
