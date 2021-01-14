@@ -127,23 +127,24 @@ public class DriveTrain {
         angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double currentAngleIn360;
         if(angles.firstAngle <=0){
-            currentAngleIn360 = angles.firstAngle + 360;
+            currentAngleIn360 = angles.firstAngle + 360; //puts starting angle in terms of 360 degree circle (always positive)
         }
         else{
             currentAngleIn360 = angles.firstAngle;
         }
-        double targetAngle = angles.firstAngle + degreesToTurn;
-        double degreesLeftToTurn;
-        double distanceFromJump;
-        if (currentAngleIn360 > 0 && currentAngleIn360 <= 180) {
-            distanceFromJump = currentAngleIn360;
+
+        double targetAngle = currentAngleIn360 + degreesToTurn; // calculates angle the robot is trying to turn to
+        if(targetAngle > 360){
+            targetAngle -= 360; //keeps target angle within 1-360 degree range
         }
-        else if (currentAngleIn360 > 180 && currentAngleIn360 <= 360) {
-            distanceFromJump = 360 - currentAngleIn360;
+        double degreesLeftToTurn = targetAngle - currentAngleIn360;
+        if(degreesLeftToTurn < -180){
+            degreesLeftToTurn += 360; // makes sure robot always tries to turn shortest distance between it and the target angle
         }
-        //
-        degreesLeftToTurn = targetAngle - angles.firstAngle;
-        if (degreesToTurn < 0) {
+        else if(degreesLeftToTurn > 180){
+            degreesLeftToTurn -=360;
+        }
+        if (degreesLeftToTurn < 0) {
             while ((degreesLeftToTurn >= 0) && this.opMode.opModeIsActive()) {
                 double generalPower = (degreesToTurn - angles.firstAngle)/(degreesToTurn);
                 if (generalPower < 0.5) {
@@ -154,11 +155,23 @@ public class DriveTrain {
                 hera.motorThree.setPower(-generalPower * wheelThreePower);
                 hera.motorFour.setPower(-generalPower * wheelFourPower);
                 angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                degreesLeftToTurn = targetAngle - angles.firstAngle;
+                if(angles.firstAngle <=0){
+                    currentAngleIn360 = angles.firstAngle + 360; //puts current angle in terms of 360 degree circle (always positive)
+                }
+                else{
+                    currentAngleIn360 = angles.firstAngle;
+                }
+                degreesLeftToTurn = targetAngle - currentAngleIn360;
+                if(degreesLeftToTurn < -180){
+                    degreesLeftToTurn += 360; // makes sure robot always tries to turn shortest distance between it and the target angle
+                }
+                else if(degreesLeftToTurn > 180){
+                    degreesLeftToTurn -=360;
+                }
                 String turnInfo = "angles: " + angles.firstAngle + ", " + angles.secondAngle + ", " + angles.thirdAngle;
                 showData("Turning", turnInfo);
             }
-        } else {
+        } else if (degreesLeftToTurn >0){ // changed the if statement so that it will keep turning back and forth until it reaches the target angle 
             while ((degreesLeftToTurn <= 0) && this.opMode.opModeIsActive()) {
                 double generalPower = (degreesToTurn - angles.firstAngle)/(degreesToTurn);
                 if (generalPower < 0.5) {
@@ -169,14 +182,28 @@ public class DriveTrain {
                 hera.motorThree.setPower(generalPower * wheelThreePower);
                 hera.motorFour.setPower(generalPower * wheelFourPower);
                 angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                degreesLeftToTurn = targetAngle - angles.firstAngle;
+                if(angles.firstAngle <=0){
+                    currentAngleIn360 = angles.firstAngle + 360; //puts starting angle in terms of 360 degree circle (always positive)
+                }
+                else{
+                    currentAngleIn360 = angles.firstAngle;
+                }
+                degreesLeftToTurn = targetAngle - currentAngleIn360;
+                if(degreesLeftToTurn < -180){
+                    degreesLeftToTurn += 360; // makes sure robot always tries to turn shortest distance between it and the target angle
+                }
+                else if(degreesLeftToTurn > 180){
+                    degreesLeftToTurn -=360;
+                }
                 telemetry.addData("degreesToTurn", degreesToTurn);
                 telemetry.update();
                 String turnInfo = "angles: " + angles.firstAngle + ", " + angles.secondAngle + ", " + angles.thirdAngle;
                 showData("Turning", turnInfo);
             }
         }
-        this.stop();
+        else {
+            this.stop();
+        }
     }
 
     public void goLeft(double inches) {
