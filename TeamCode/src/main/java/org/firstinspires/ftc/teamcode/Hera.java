@@ -69,24 +69,38 @@ public class Hera {
             driveTrain.goForward(12);
             driveTrain.turn(-90);
             */
-             driveTrain.turn(-90);
+            driveTrain.goBackward(24);
+            this.opMode.sleep(2000);
+            driveTrain.goForward(24);
+            this.opMode.sleep(2000);
+            driveTrain.turn(15);
+            this.opMode.sleep(2000);
+            driveTrain.turn(-15);
         }
     }
 
     public void redAutoShoot() {
 
         if(this.opMode.opModeIsActive()) {
+            showData("Step One: ", "Start shooter motor");
             this.hwmap.shooterMotor.setPower(.8);
+            showData("Step Two: ", "Get ring number");
             RingPosition position = openCV.getRingNumber();
             long endTime = System.currentTimeMillis() + 1000;
             while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
                 position = openCV.getRingNumber();
             }
+            showData("Step Three: ", "Go backwards");
             driveTrain.goBackward(10);
+            showData("Step Four: ", "Turn 15 degrees");
             driveTrain.turn(15);
+            showData("Step Five: ", "SHOOT");
             shooter.shoot();
+            showData("Step Six: ", "Beddy Bye");
             this.opMode.sleep(2000);
+            showData("Step Seven: ", "Turn -15 degrees");
             driveTrain.turn(-15);
+            showData("Step Eight: ", "" + position);
             if (position == RingPosition.ONE) {
                 // Drive to 2nd square
                 driveTrain.goBackward(30);
