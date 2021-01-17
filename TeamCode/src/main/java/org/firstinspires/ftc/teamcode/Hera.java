@@ -64,10 +64,13 @@ public class Hera {
 
     public void forwardTurn() {
         if(this.opMode.opModeIsActive()){
-            this.driveTrain.goForward(400);
+            /*
+            driveTrain.turn(90);
+            driveTrain.goForward(12);
+            driveTrain.turn(-90);
+            */
+             driveTrain.turn(-90);
         }
-//        driveTrain.turn(-90);
-//        driveTrain.goForward(30);
     }
 
     public void redAutoShoot() {
@@ -79,7 +82,7 @@ public class Hera {
             while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
                 position = openCV.getRingNumber();
             }
-            driveTrain.goForward(10);
+            driveTrain.goBackward(10);
             driveTrain.turn(15);
             shooter.shoot();
             this.opMode.sleep(2000);

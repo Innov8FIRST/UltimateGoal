@@ -14,8 +14,8 @@ public class Wobble {
 
     public double dropperDown = .75;
     public double dropperUp = 0;
-    public double grabberOpen = 0;
-    public double grabberClose = 1;
+    public double grabberOpen = .35;
+    public double grabberClose = .5;
 
 
     public Wobble(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {

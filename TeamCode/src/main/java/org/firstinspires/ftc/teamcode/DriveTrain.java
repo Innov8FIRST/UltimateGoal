@@ -30,7 +30,7 @@ public class DriveTrain {
     private double wheelTwoRatio = 1;
     private double wheelThreeRatio = 1;
     private double wheelFourRatio = 1;
-    public static double INCH_TO_TICK = (8640/522); // The number of encoder ticks per inch for our wheels
+    public static double INCH_TO_TICK = (4320/522); // The number of encoder ticks per inch for our wheels
     public static double SIDE_TICKS_IN_INCH = (360/6); // The number of encoder ticks for one inch while travelling sideways, change later
     public DriveTrain(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {
 
@@ -122,6 +122,7 @@ public class DriveTrain {
      * @param degreesToTurn Number of degrees to turn. If negative, turns right. If positive, turns left.
      */
     public void turn(double degreesToTurn) {
+        showData("Turn status: ", "Entered turn method");
         telemetry.addData("Degrees to Turn: ", degreesToTurn);
         Orientation angles;
         angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -132,11 +133,12 @@ public class DriveTrain {
         else{
             currentAngleIn360 = angles.firstAngle;
         }
-
+        showData("Original currentAngle", currentAngleIn360+"");
         double targetAngle = currentAngleIn360 + degreesToTurn; // calculates angle the robot is trying to turn to
         if(targetAngle > 360){
             targetAngle -= 360; //keeps target angle within 1-360 degree range
         }
+        showData("targetAngle", targetAngle+"");
         double degreesLeftToTurn = targetAngle - currentAngleIn360;
         if(degreesLeftToTurn < -180){
             degreesLeftToTurn += 360; // makes sure robot always tries to turn shortest distance between it and the target angle
@@ -144,8 +146,9 @@ public class DriveTrain {
         else if(degreesLeftToTurn > 180){
             degreesLeftToTurn -=360;
         }
+        showData("original degreesLeftToTurn", degreesLeftToTurn+"");
         if (degreesLeftToTurn < 0) {
-            while ((degreesLeftToTurn >= 0) && this.opMode.opModeIsActive()) {
+            while ((degreesLeftToTurn <= 0) && this.opMode.opModeIsActive()) {
                 double generalPower = (degreesToTurn - angles.firstAngle)/(degreesToTurn);
                 if (generalPower < 0.5) {
                     generalPower = 0.5;
@@ -170,9 +173,10 @@ public class DriveTrain {
                 }
                 String turnInfo = "angles: " + angles.firstAngle + ", " + angles.secondAngle + ", " + angles.thirdAngle;
                 showData("Turning", turnInfo);
+                showData("DegreesLeftToTurn", degreesLeftToTurn+"");
             }
-        } else if (degreesLeftToTurn >0){ // changed the if statement so that it will keep turning back and forth until it reaches the target angle 
-            while ((degreesLeftToTurn <= 0) && this.opMode.opModeIsActive()) {
+        } else if (degreesLeftToTurn > 0){ // changed the if statement so that it will keep turning back and forth until it reaches the target angle
+            while ((degreesLeftToTurn >= 0) && this.opMode.opModeIsActive()) {
                 double generalPower = (degreesToTurn - angles.firstAngle)/(degreesToTurn);
                 if (generalPower < 0.5) {
                     generalPower = 0.5;
@@ -195,8 +199,7 @@ public class DriveTrain {
                 else if(degreesLeftToTurn > 180){
                     degreesLeftToTurn -=360;
                 }
-                telemetry.addData("degreesToTurn", degreesToTurn);
-                telemetry.update();
+                showData("DegreesLeftToTurn", degreesLeftToTurn+"");
                 String turnInfo = "angles: " + angles.firstAngle + ", " + angles.secondAngle + ", " + angles.thirdAngle;
                 showData("Turning", turnInfo);
             }
@@ -269,13 +272,22 @@ public class DriveTrain {
         double y = -gamepad1.left_stick_y; // Remember, this is reversed!
         double x = gamepad1.left_stick_x * 1.5; // 1.5 is to counteract imperfect strafing
         double rx = gamepad1.right_stick_x;
+        double z = 1;                            // directional multiplier
 
         showData("rx value","" + rx);
 
-        hera.motorOne.setPower(y + x + rx);
-        hera.motorTwo.setPower(y - x + rx);
-        hera.motorThree.setPower(y - x - rx);
-        hera.motorFour.setPower(y + x - rx);
+        hera.motorOne.setPower(z * (y + x + rx));
+        hera.motorTwo.setPower(z * (y - x + rx));
+        hera.motorThree.setPower(z * (y - x - rx));
+        hera.motorFour.setPower(z * (y + x - rx));
+
+        if (gamepad1.dpad_left) {
+            z = -1;
+        }
+
+        if (gamepad1.dpad_right) {
+            z = 1;
+        }
 
     }
 
