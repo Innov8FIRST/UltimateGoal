@@ -26,6 +26,7 @@ public class Hera {
     Gamepad gamepad1 = new Gamepad();
     Gamepad gamepad2 = new Gamepad();
     HardwareInnov8Hera hwmap;
+    double defaultPower = 0.4;
 
     public Hera(Telemetry telemetry, HardwareMap hwmap, LinearOpMode opMode) {
         this.opMode = opMode;
@@ -69,13 +70,13 @@ public class Hera {
             driveTrain.goForward(12);
             driveTrain.turn(-90);
             */
-            driveTrain.goBackward(24);
+            driveTrain.goBackward(36, defaultPower);
             this.opMode.sleep(2000);
-            driveTrain.goForward(24);
-            this.opMode.sleep(2000);
-            driveTrain.turn(15);
-            this.opMode.sleep(2000);
-            driveTrain.turn(-15);
+            driveTrain.goForward(36, defaultPower);
+//            this.opMode.sleep(2000);
+//            driveTrain.turn(15);
+//            this.opMode.sleep(2000);
+//            driveTrain.turn(-15);
         }
     }
 
@@ -91,39 +92,42 @@ public class Hera {
                 position = openCV.getRingNumber();
             }
             showData("Step Three: ", "Go backwards");
-            driveTrain.goBackward(10);
+            driveTrain.goBackward(10, defaultPower);
             showData("Step Four: ", "Turn 15 degrees");
-            driveTrain.turn(15);
+            driveTrain.turn(15, defaultPower);
             showData("Step Five: ", "SHOOT");
             shooter.shoot();
             showData("Step Six: ", "Beddy Bye");
             this.opMode.sleep(2000);
             showData("Step Seven: ", "Turn -15 degrees");
-            driveTrain.turn(-15);
+            driveTrain.turn(-15, defaultPower);
             showData("Step Eight: ", "" + position);
             if (position == RingPosition.ONE) {
                 // Drive to 2nd square
-                driveTrain.goBackward(30);
-                driveTrain.goLeft(26);
+                driveTrain.goBackward(30, defaultPower);
+                driveTrain.goLeft(26, defaultPower);
                 wobble.drop();
                 // Park over line
-                driveTrain.goForward(28);
+                driveTrain.goForward(28, defaultPower);
+                wobble.reset();
                 showData("Ring Position", "One");
             } else if (position == RingPosition.FOUR) {
                 // Drive to 3rd square
-                driveTrain.goBackward(54);
-                driveTrain.goLeft(50);
+                driveTrain.goBackward(54, defaultPower);
+                driveTrain.goLeft(50, defaultPower);
                 wobble.drop();
                 // Park over line
-                driveTrain.goForward(52);
+                driveTrain.goForward(52, defaultPower);
+                wobble.reset();
                 showData("Ring Position", "Four");
             } else {
                 // Drive to 1st square
-                driveTrain.goBackward(26);
-                driveTrain.goLeft(50);
+                driveTrain.goBackward(26, defaultPower);
+                driveTrain.goLeft(50, defaultPower);
                 wobble.drop();
                 // Park over line
-                driveTrain.goForward(24);
+                driveTrain.goForward(24, defaultPower);
+                wobble.reset();
                 showData("Ring Position", "None");
             }
         }
@@ -135,38 +139,41 @@ public class Hera {
             while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
                 position = openCV.getRingNumber();
             }
-            driveTrain.goForward(10);
-            driveTrain.turn(-180);
+            driveTrain.goForward(10, defaultPower);
+            driveTrain.turn(-180, defaultPower);
             if (position == RingPosition.ONE) {
                 // Drive to 2nd square
-                driveTrain.goBackward(30);
-                driveTrain.goLeft(26);
+                driveTrain.goBackward(30, defaultPower);
+                driveTrain.goLeft(26, defaultPower);
                 wobble.drop();
                 // Park over line
-                driveTrain.goForward(28);
+                driveTrain.goForward(28, defaultPower);
+                wobble.reset();
                 showData("Ring Position", "One");
             } else if (position == RingPosition.FOUR) {
                 // Drive to 3rd square
-                driveTrain.goBackward(54);
-                driveTrain.goLeft(50);
+                driveTrain.goBackward(54, defaultPower);
+                driveTrain.goLeft(50, defaultPower);
                 wobble.drop();
                 // Park over line
-                driveTrain.goForward(52);
+                driveTrain.goForward(52, defaultPower);
+                wobble.reset();
                 showData("Ring Position", "Four");
             } else {
                 // Drive to 1st square
-                driveTrain.goBackward(26);
-                driveTrain.goLeft(50);
+                driveTrain.goBackward(26, defaultPower);
+                driveTrain.goLeft(50, defaultPower);
                 wobble.drop();
                 // Park over line
-                driveTrain.goForward(24);
+                driveTrain.goForward(24, defaultPower);
+                wobble.reset();
                 showData("Ring Position", "None");
             }
         }
     }
 
     public void parkOnLine(){
-        driveTrain.goForward(7*12);
+        driveTrain.goForward(7*12, defaultPower);
     }
 
 

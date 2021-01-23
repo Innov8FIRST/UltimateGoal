@@ -14,7 +14,7 @@ public class Shooter {
     HardwareInnov8Hera hera;
     LinearOpMode opMode;
 
-    public static double RINGPUSHER_LOAD = .6;
+    public static double RINGPUSHER_LOAD = .7;
     public static double RINGPUSHER_SHOOT = .05;
     public double shootPower = .8;
     public long postShotTime = 0;

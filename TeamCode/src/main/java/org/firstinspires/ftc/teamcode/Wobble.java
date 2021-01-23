@@ -12,10 +12,10 @@ public class Wobble {
     HardwareInnov8Hera hera;
     LinearOpMode opMode;
 
-    public double dropperDown = .75;
+    public double dropperDown = .9;
     public double dropperUp = 0;
-    public double grabberOpen = .35;
-    public double grabberClose = .5;
+    public double grabberOpen = .05;
+    public double grabberClose = .8;
 
 
     public Wobble(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {
@@ -28,6 +28,8 @@ public class Wobble {
     public void drop() {
         this.hera.wobbleDropper.setPosition(dropperUp);
     }
+
+    public void reset() { this.hera.wobbleDropper.setPosition(dropperDown); }
 
     public void pickup(){
 
