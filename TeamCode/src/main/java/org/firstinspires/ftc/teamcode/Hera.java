@@ -70,9 +70,9 @@ public class Hera {
             driveTrain.goForward(12);
             driveTrain.turn(-90);
             */
-            driveTrain.goBackward(36, defaultPower);
-            this.opMode.sleep(2000);
-            driveTrain.goForward(36, defaultPower);
+//            driveTrain.goBackward(36, defaultPower);
+//            this.opMode.sleep(2000);
+            driveTrain.goForward(48, defaultPower);
 //            this.opMode.sleep(2000);
 //            driveTrain.turn(15);
 //            this.opMode.sleep(2000);

@@ -28,9 +28,9 @@ public class DriveTrain {
     private double wheelFourPower = 0.4;
     private static double WHEEL_DIAMETER = 4;
     private static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-    private static double TICKS_IN_A_ROTATION = 28;
-    private static double GEAR_RATIO = 2/1; // 2:1 gear ratio
-    public static double TICKS_IN_AN_INCH = ((TICKS_IN_A_ROTATION/GEAR_RATIO)/ WHEEL_CIRCUMFERENCE); // The number of encoder ticks per inch for our wheels
+    private static double TICKS_IN_A_ROTATION = 28*40; //CPR = 28, 40:1 gearbox on motor
+    private static double GEAR_RATIO = 1/2; // 2:1 gear ratio (2 wheel rotations for one motor rotation)
+    public static double TICKS_IN_AN_INCH = ((TICKS_IN_A_ROTATION*GEAR_RATIO)/ WHEEL_CIRCUMFERENCE); // The number of encoder ticks per inch for our wheels
     public static double SIDE_TICKS_IN_INCH = (360/6); // The number of encoder ticks for one inch while travelling sideways, change later
     public DriveTrain(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {
 
@@ -55,25 +55,25 @@ public class DriveTrain {
         double endPosition = 0;
         showData("DRIVE_TRAIN_CAPTION", "Robot is moving forward");
         this.telemetry.update();
-        startPosition = hera.motorOne.getCurrentPosition();
+        startPosition = hera.motorTwo.getCurrentPosition();
         endPosition = startPosition + (inches * TICKS_IN_AN_INCH); // How far you need to travel
         Orientation angles;
         angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double startingOrientation = angles.firstAngle;
         double error = 0;
         double steer = 0;
-        while (hera.motorOne.getCurrentPosition() < endPosition && this.opMode.opModeIsActive()) {
+        while (hera.motorTwo.getCurrentPosition() < endPosition && this.opMode.opModeIsActive()) {
             hera.motorOne.setPower(wheelOnePower);
             hera.motorTwo.setPower(wheelTwoPower);
             hera.motorThree.setPower(wheelThreePower);
             hera.motorFour.setPower(wheelFourPower);
             angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             error = startingOrientation - angles.firstAngle;
-            double powerChanger = (error/100)+1.1;
+            double powerChanger = (error/100)+0.9;
             if(error < 0 && this.opMode.opModeIsActive()){
                 hera.motorThree.setPower(wheelThreePower * powerChanger);
                 hera.motorFour.setPower(wheelFourPower * powerChanger);
-                double increasePower = (Math.abs(error)/100) + 1;
+                double increasePower = (Math.abs(error)/100) + 1.1;
                 hera.motorOne.setPower(wheelOnePower * increasePower);
                 hera.motorTwo.setPower(wheelTwoPower * increasePower);
             }
@@ -86,7 +86,7 @@ public class DriveTrain {
             }
             showData("StartPosition", "" + startPosition);
             showData("EndPosition", "" + endPosition);
-            showData("CurrentPosition", "" + hera.motorOne.getCurrentPosition());
+            showData("CurrentPosition", "" + hera.motorTwo.getCurrentPosition());
             showData("wheel one power", "" + hera.motorOne.getPower());
             showData("wheel two power", "" + hera.motorTwo.getPower());
             showData("wheel three power", "" + hera.motorThree.getPower());
@@ -110,14 +110,14 @@ public class DriveTrain {
         double startPosition = 0;
         double endPosition = 0;
         showData("DRIVE_TRAIN_CAPTION", "Robot is moving backwards");
-        startPosition = hera.motorOne.getCurrentPosition();
+        startPosition = hera.motorTwo.getCurrentPosition();
         endPosition = startPosition - (inches * TICKS_IN_AN_INCH); // How far you need to travel
         Orientation angles;
         angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double startingOrientation = angles.firstAngle;
         double error = 0;
         double steer = 0;
-        while (hera.motorOne.getCurrentPosition() > endPosition && this.opMode.opModeIsActive()) {
+        while (hera.motorTwo.getCurrentPosition() > endPosition && this.opMode.opModeIsActive()) {
             hera.motorOne.setPower(-wheelOnePower);
             hera.motorTwo.setPower(-wheelTwoPower);
             hera.motorThree.setPower(-wheelThreePower);
@@ -141,7 +141,7 @@ public class DriveTrain {
             }
             showData("StartPosition", "" + startPosition);
             showData("EndPosition", "" + endPosition);
-            showData("CurrentPosition", "" + hera.motorOne.getCurrentPosition());
+            showData("CurrentPosition", "" + hera.motorTwo.getCurrentPosition());
             showData("wheel one power", "" + hera.motorOne.getPower());
             showData("wheel two power", "" + hera.motorTwo.getPower());
             showData("wheel three power", "" + hera.motorThree.getPower());

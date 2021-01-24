@@ -14,7 +14,8 @@ public class Shooter {
     HardwareInnov8Hera hera;
     LinearOpMode opMode;
 
-    public static double RINGPUSHER_LOAD = .7;
+    public static double RINGPUSHER_LOAD = .5;
+    public static double RINGPUSHER_LOAD_TELEOP = 0.6;
     public static double RINGPUSHER_SHOOT = .05;
     public double shootPower = .8;
     public long postShotTime = 0;
@@ -38,7 +39,6 @@ public class Shooter {
 
 
     public void teleopUpdate(Gamepad gamepad1, Gamepad gamepad2) {
-
         if (gamepad2.a) {
             this.hera.shooterMotor.setPower(shootPower);
         }
@@ -77,7 +77,7 @@ public class Shooter {
 
         switch (shooterState) {
             case LOADING:
-                hera.ringPusher.setPosition(RINGPUSHER_LOAD);
+                hera.ringPusher.setPosition(RINGPUSHER_LOAD_TELEOP);
                 if (gamepad2.x && hera.ringTouchSensor.isPressed()) {
                     showData("Is touch sensor pressed? ", "" + hera.ringTouchSensor.isPressed());
                     shooterState = ShootState.SHOOTING;
