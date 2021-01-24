@@ -26,7 +26,11 @@ public class DriveTrain {
     private double wheelTwoPower = 0.4;
     private double wheelThreePower = 0.4;
     private double wheelFourPower = 0.4;
-    public static double INCH_TO_TICK = (14*8  / (4 * Math.PI)); // The number of encoder ticks per inch for our wheels
+    private static double WHEEL_DIAMETER = 4;
+    private static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+    private static double TICKS_IN_A_ROTATION = 28;
+    private static double GEAR_RATIO = 2/1; // 2:1 gear ratio
+    public static double TICKS_IN_AN_INCH = ((TICKS_IN_A_ROTATION/GEAR_RATIO)/ WHEEL_CIRCUMFERENCE); // The number of encoder ticks per inch for our wheels
     public static double SIDE_TICKS_IN_INCH = (360/6); // The number of encoder ticks for one inch while travelling sideways, change later
     public DriveTrain(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {
 
@@ -52,7 +56,7 @@ public class DriveTrain {
         showData("DRIVE_TRAIN_CAPTION", "Robot is moving forward");
         this.telemetry.update();
         startPosition = hera.motorOne.getCurrentPosition();
-        endPosition = startPosition + (inches * INCH_TO_TICK); // How far you need to travel
+        endPosition = startPosition + (inches * TICKS_IN_AN_INCH); // How far you need to travel
         Orientation angles;
         angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double startingOrientation = angles.firstAngle;
@@ -107,7 +111,7 @@ public class DriveTrain {
         double endPosition = 0;
         showData("DRIVE_TRAIN_CAPTION", "Robot is moving backwards");
         startPosition = hera.motorOne.getCurrentPosition();
-        endPosition = startPosition - (inches * INCH_TO_TICK); // How far you need to travel
+        endPosition = startPosition - (inches * TICKS_IN_AN_INCH); // How far you need to travel
         Orientation angles;
         angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double startingOrientation = angles.firstAngle;
@@ -316,21 +320,21 @@ public class DriveTrain {
         double y = -gamepad1.left_stick_y; // Remember, this is reversed!
         double x = gamepad1.left_stick_x * 1.5; // 1.5 is to counteract imperfect strafing
         double rx = gamepad1.right_stick_x;
-        double z = 1;                            // directional multiplier
+        double directionalMultiplier = 1;
 
         showData("rx value","" + rx);
 
-        hera.motorOne.setPower(z * (y + x + rx));
-        hera.motorTwo.setPower(z * (y - x + rx));
-        hera.motorThree.setPower(z * (y - x - rx));
-        hera.motorFour.setPower(z * (y + x - rx));
+        hera.motorOne.setPower(directionalMultiplier * (y + x + rx));
+        hera.motorTwo.setPower(directionalMultiplier * (y - x + rx));
+        hera.motorThree.setPower(directionalMultiplier * (y - x - rx));
+        hera.motorFour.setPower(directionalMultiplier * (y + x - rx));
 
         if (gamepad1.dpad_left) {
-            z = -1;
+            directionalMultiplier = -1;
         }
 
         if (gamepad1.dpad_right) {
-            z = 1;
+            directionalMultiplier = 1;
         }
 
     }

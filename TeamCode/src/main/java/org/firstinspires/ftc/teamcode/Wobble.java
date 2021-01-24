@@ -12,10 +12,10 @@ public class Wobble {
     HardwareInnov8Hera hera;
     LinearOpMode opMode;
 
-    public double dropperDown = .9;
+    public static double DROPPER_DOWN = .9;
     public double dropperUp = 0;
     public double grabberOpen = .05;
-    public double grabberClose = .8;
+    public static double GRABBER_CLOSE = .8;
 
 
     public Wobble(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {
@@ -29,7 +29,7 @@ public class Wobble {
         this.hera.wobbleDropper.setPosition(dropperUp);
     }
 
-    public void reset() { this.hera.wobbleDropper.setPosition(dropperDown); }
+    public void reset() { this.hera.wobbleDropper.setPosition(DROPPER_DOWN); }
 
     public void pickup(){
 
@@ -37,7 +37,7 @@ public class Wobble {
 
     public void teleopUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         if (gamepad1.left_bumper || gamepad2.left_bumper) {
-            this.hera.wobbleGrabber.setPosition(grabberClose);
+            this.hera.wobbleGrabber.setPosition(GRABBER_CLOSE);
         }
 
         if (gamepad1.right_bumper || gamepad2.right_bumper) {
@@ -61,7 +61,7 @@ public class Wobble {
         }
 
         if (gamepad1.dpad_down || gamepad2.dpad_down) {
-            this.hera.wobbleDropper.setPosition(dropperDown);
+            this.hera.wobbleDropper.setPosition(DROPPER_DOWN);
         }
     }
 }

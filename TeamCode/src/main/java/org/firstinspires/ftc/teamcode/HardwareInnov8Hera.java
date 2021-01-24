@@ -93,9 +93,9 @@ public class HardwareInnov8Hera {
         intakeMotor.setDirection(DcMotor.Direction.FORWARD);
         wobbleArm.setDirection(DcMotor.Direction.FORWARD);
 
-        ringPusher.setPosition(.7);
-        wobbleDropper.setPosition(.9);
-        wobbleGrabber.setPosition(0);
+        ringPusher.setPosition(Shooter.RINGPUSHER_LOAD);
+        wobbleDropper.setPosition(Wobble.DROPPER_DOWN);
+        wobbleGrabber.setPosition(Wobble.GRABBER_CLOSE);
 
 
 

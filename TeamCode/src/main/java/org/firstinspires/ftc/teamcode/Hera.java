@@ -86,21 +86,17 @@ public class Hera {
             showData("Step One: ", "Start shooter motor");
             this.hwmap.shooterMotor.setPower(.8);
             showData("Step Two: ", "Get ring number");
-            RingPosition position = openCV.getRingNumber();
-            long endTime = System.currentTimeMillis() + 1000;
-            while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
-                position = openCV.getRingNumber();
-            }
+            position = openCV.getRingNumber();
             showData("Step Three: ", "Go backwards");
             driveTrain.goBackward(10, defaultPower);
             showData("Step Four: ", "Turn 15 degrees");
-            driveTrain.turn(15, defaultPower);
+            driveTrain.turn(7, defaultPower);
             showData("Step Five: ", "SHOOT");
             shooter.shoot();
             showData("Step Six: ", "Beddy Bye");
             this.opMode.sleep(2000);
             showData("Step Seven: ", "Turn -15 degrees");
-            driveTrain.turn(-15, defaultPower);
+            driveTrain.turn(-7, defaultPower);
             showData("Step Eight: ", "" + position);
             if (position == RingPosition.ONE) {
                 // Drive to 2nd square
@@ -135,10 +131,6 @@ public class Hera {
     public void redAutoNoShoot() {
         if(this.opMode.opModeIsActive()) {
             position = openCV.getRingNumber();
-            long endTime = System.currentTimeMillis() + 1000;
-            while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
-                position = openCV.getRingNumber();
-            }
             driveTrain.goForward(10, defaultPower);
             driveTrain.turn(-180, defaultPower);
             if (position == RingPosition.ONE) {

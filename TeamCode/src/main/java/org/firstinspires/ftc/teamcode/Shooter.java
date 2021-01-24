@@ -79,7 +79,7 @@ public class Shooter {
             case LOADING:
                 hera.ringPusher.setPosition(RINGPUSHER_LOAD);
                 if (gamepad2.x && hera.ringTouchSensor.isPressed()) {
-                    showData("TOUCH_SENSOR: ", "Touch sensor is pressed");
+                    showData("Is touch sensor pressed? ", "" + hera.ringTouchSensor.isPressed());
                     shooterState = ShootState.SHOOTING;
                 }
                 break;
