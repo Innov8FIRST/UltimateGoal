@@ -14,11 +14,11 @@ public class Shooter {
     HardwareInnov8Hera hera;
     LinearOpMode opMode;
 
-    public static double RINGPUSHER_LOAD = 0;
-    public static double RINGPUSHER_SHOOT = .75;
+    public static double RINGPUSHER_LOAD = .5;
+    public static double RINGPUSHER_LOAD_TELEOP = 0.6;
+    public static double RINGPUSHER_SHOOT = .05;
     public double shootPower = .8;
     public long postShotTime = 0;
-    public boolean shooterMotorIsRunning = false;
     private enum ShootState {LOADING, SHOOTING, SETTING_CHILL_TIME, CHILLING}
     public ShootState shooterState = ShootState.LOADING;
 
@@ -34,27 +34,17 @@ public class Shooter {
         postShotTime = System.currentTimeMillis() + 1000;
         while ((System.currentTimeMillis() < postShotTime) && this.opMode.opModeIsActive()){}
         this.hera.ringPusher.setPosition(RINGPUSHER_LOAD);
+        showData("Shoot status", "Shooting");
         }
 
 
     public void teleopUpdate(Gamepad gamepad1, Gamepad gamepad2) {
-
-        if (shooterMotorIsRunning) {
-            if (gamepad2.a) {
-                hera.shooterMotor.setPower(0);
-                shooterMotorIsRunning = false;
-            }
-        }
-        else {
-            if (gamepad2.a) {
-                hera.shooterMotor.setPower(shootPower);
-                shooterMotorIsRunning = true;
-            }
+        if (gamepad2.a) {
+            this.hera.shooterMotor.setPower(shootPower);
         }
 
-        if (gamepad1.x) {
-            hera.ringPusher.setPosition(RINGPUSHER_SHOOT);
-            shooterState = ShootState.SETTING_CHILL_TIME;
+        if (gamepad2.x) {
+            this.hera.shooterMotor.setPower(0);
         }
 
         if (gamepad1.a) {
@@ -69,12 +59,27 @@ public class Shooter {
             hera.ringPusher.setPosition(1);
         }
 
+        if (gamepad1.x) {
+            hera.ringPusher.setPosition(RINGPUSHER_SHOOT);
+            shooterState = ShootState.SHOOTING;
+        }
+
+        if (gamepad1.dpad_left && hera.ringPusher.getPosition() < 1) {
+            hera.ringPusher.setPosition(hera.ringPusher.getPosition() + .05);
+        }
+
+        if (gamepad1.dpad_right && hera.ringPusher.getPosition() > 0) {
+            hera.ringPusher.setPosition(hera.ringPusher.getPosition() - .05);
+        }
+
+        showData("Ring Pusher Position", "" + hera.ringPusher.getPosition());
+
 
         switch (shooterState) {
             case LOADING:
-                hera.ringPusher.setPosition(RINGPUSHER_LOAD);
+                hera.ringPusher.setPosition(RINGPUSHER_LOAD_TELEOP);
                 if (gamepad2.x && hera.ringTouchSensor.isPressed()) {
-                    showData("TOUCH_SENSOR: ", "Touch sensor is pressed");
+                    showData("Is touch sensor pressed? ", "" + hera.ringTouchSensor.isPressed());
                     shooterState = ShootState.SHOOTING;
                 }
                 break;

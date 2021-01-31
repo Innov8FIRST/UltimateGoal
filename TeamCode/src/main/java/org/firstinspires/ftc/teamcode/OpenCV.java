@@ -49,6 +49,9 @@ public class OpenCV {
     }
 
     public RingPosition getRingNumber() {
+        long endTime = System.currentTimeMillis() + 1000;
+        while(System.currentTimeMillis() <= endTime && this.opMode.opModeIsActive()){
+        }
         return pipeline.position;
     }
 
