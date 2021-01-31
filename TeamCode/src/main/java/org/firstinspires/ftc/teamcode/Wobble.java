@@ -31,10 +31,6 @@ public class Wobble {
 
     public void reset() { this.hera.wobbleDropper.setPosition(DROPPER_DOWN); }
 
-    public void pickup(){
-
-    }
-
     public void teleopUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         if (gamepad1.left_bumper || gamepad2.left_bumper) {
             this.hera.wobbleGrabber.setPosition(GRABBER_CLOSE);
