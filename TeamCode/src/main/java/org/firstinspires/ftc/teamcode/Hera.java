@@ -70,9 +70,16 @@ public class Hera {
             driveTrain.goForward(12);
             driveTrain.turn(-90);
             */
-            driveTrain.goBackward(36, defaultPower);
+            driveTrain.goForward(24, defaultPower);
             this.opMode.sleep(2000);
-            driveTrain.goForward(48, defaultPower);
+            driveTrain.turn(-90, defaultPower);
+            this.opMode.sleep(2000);
+            driveTrain.goBackward(24, defaultPower);
+            this.opMode.sleep(2000);
+            driveTrain.turn(90, defaultPower);
+            this.opMode.sleep(2000);
+            driveTrain.goBackward(24, defaultPower);
+
 //            this.opMode.sleep(2000);
 //            driveTrain.turn(15);
 //            this.opMode.sleep(2000);
@@ -84,24 +91,24 @@ public class Hera {
 
         if(this.opMode.opModeIsActive()) {
             showData("Step One: ", "Start shooter motor");
-            this.hwmap.shooterMotor.setPower(.8);
+                this.hwmap.shooterMotor.setVelocity(1750);
             showData("Step Two: ", "Get ring number");
             position = openCV.getRingNumber();
             showData("Step Three: ", "Go backwards");
             driveTrain.goBackward(5, defaultPower);
             showData("Step Four: ", "Turn 7 degrees");
-            driveTrain.turn(7, defaultPower);
+            driveTrain.turn(10, defaultPower);
             showData("Step Five: ", "SHOOT");
             shooter.shoot();
             showData("Step Six: ", "Beddy Bye");
             this.opMode.sleep(2000);
             showData("Step Seven: ", "Turn -7 degrees");
-            driveTrain.turn(-7, defaultPower);
+            driveTrain.turn(-10, defaultPower);
             showData("Step Eight: ", "" + position);
             if (position == RingPosition.ONE) {
                 // Drive to 2nd square
                 showData("Step Nine a ", "take it back now ya'll");
-                driveTrain.goBackward(6*12, defaultPower);
+                driveTrain.goBackward(8*12, defaultPower);
                 showData("Step Ten a ", "drop it like it's hot");
                 wobble.drop();
                 // Park over line
@@ -117,7 +124,7 @@ public class Hera {
                 showData("Step Ten b", "We be turning!(90 degrees to be exact)");
                 driveTrain.turn(90, defaultPower);
                 showData("Step Eleven b", "goin back to the box!");
-                driveTrain.goBackward(30, defaultPower);
+                driveTrain.goForward(30, defaultPower);
                 showData("Step Twelve b", "drop it like it's hot 2 electric boogaloo");
                 wobble.drop();
                 // Park over line
@@ -131,7 +138,8 @@ public class Hera {
                 // Drive to 1st square
                 driveTrain.goBackward(4*12, defaultPower);
                 driveTrain.turn(90, defaultPower);
-                driveTrain.goBackward(22, defaultPower);
+                driveTrain.goForward(22, defaultPower);
+                showData("Step IDK", "Drop dat wobble!");
                 wobble.drop();
                 // Park over line
                 wobble.reset();

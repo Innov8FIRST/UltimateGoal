@@ -34,7 +34,7 @@ public class HardwareInnov8Hera {
     public DcMotor motorTwo = null; // Back left  wheel
     public DcMotor motorThree = null; // Front right wheel
     public DcMotor motorFour = null; // Back right wheel
-    public DcMotor shooterMotor = null;
+    public DcMotorEx shooterMotor = null;
     public DcMotor conveyerMotor = null;
     public DcMotor intakeMotor = null;
     public DcMotor wobbleArm = null;
@@ -71,7 +71,7 @@ public class HardwareInnov8Hera {
         motorTwo = this.hwMap.get(DcMotor.class, "motorTwo");
         motorThree = this.hwMap.get(DcMotor.class, "motorThree");
         motorFour = this.hwMap.get(DcMotor.class, "motorFour");
-        shooterMotor = this.hwMap.get(DcMotor.class, "shooterMotor");
+        shooterMotor = this.hwMap.get(DcMotorEx.class, "shooterMotor");
         conveyerMotor = this.hwMap.get(DcMotor.class, "conveyerMotor");
         intakeMotor = this.hwMap.get(DcMotor.class, "intakeMotor");
         wobbleArm = this.hwMap.get(DcMotor.class, "wobbleArm");

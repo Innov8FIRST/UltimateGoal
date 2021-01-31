@@ -17,7 +17,7 @@ public class Shooter {
     public static double RINGPUSHER_LOAD = .5;
     public static double RINGPUSHER_LOAD_TELEOP = 0.6;
     public static double RINGPUSHER_SHOOT = .05;
-    public double shootPower = .8;
+    public double shootVelocity = 1750; // middle goal: 1600 if shooting from the back wall
     public long postShotTime = 0;
     private enum ShootState {LOADING, SHOOTING, SETTING_CHILL_TIME, CHILLING}
     public ShootState shooterState = ShootState.LOADING;
@@ -40,7 +40,7 @@ public class Shooter {
 
     public void teleopUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         if (gamepad2.a) {
-            this.hera.shooterMotor.setPower(shootPower);
+            this.hera.shooterMotor.setVelocity(shootVelocity);
         }
 
         if (gamepad2.x) {

@@ -28,10 +28,11 @@ public class DriveTrain {
     private double wheelFourPower = 0.4;
     private static double WHEEL_DIAMETER = 4;
     private static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-    private static double TICKS_IN_A_ROTATION = 28*40; //CPR = 28, 40:1 gearbox on motor
+    private static double TICKS_IN_A_ROTATION = 28 * 40; //CPR = 28, 40:1 gearbox on motor
     private static double GEAR_RATIO = 0.5; // 2:1 gear ratio (2 wheel rotations for one motor rotation)
-    private static final double TICKS_IN_AN_INCH = ((TICKS_IN_A_ROTATION*GEAR_RATIO)/ WHEEL_CIRCUMFERENCE); // The number of encoder ticks per inch for our wheels
-    public static double SIDE_TICKS_IN_INCH = (360/6); // The number of encoder ticks for one inch while travelling sideways, change later
+    private static final double TICKS_IN_AN_INCH = ((TICKS_IN_A_ROTATION * GEAR_RATIO) / WHEEL_CIRCUMFERENCE); // The number of encoder ticks per inch for our wheels
+    public static double SIDE_TICKS_IN_INCH = (360 / 6); // The number of encoder ticks for one inch while travelling sideways, change later
+
     public DriveTrain(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {
 
 // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
@@ -79,19 +80,19 @@ public class DriveTrain {
             hera.motorThree.setPower(wheelThreePower);
             hera.motorFour.setPower(wheelFourPower);
             angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            error = startingOrientation - angles.firstAngle;
-            double powerChanger = (error/100)+0.9;
-            if(error < 0 && this.opMode.opModeIsActive()){
+            error = startingOrientation + angles.firstAngle;
+            double powerChanger = (error / 100) + 0.9;
+            if (error < 0 && this.opMode.opModeIsActive()) {
                 hera.motorThree.setPower(wheelThreePower * powerChanger);
                 hera.motorFour.setPower(wheelFourPower * powerChanger);
-                double increasePower = (Math.abs(error)/100) + 1.1;
+                double increasePower = (Math.abs(error) / 100) + 1.1;
                 hera.motorOne.setPower(wheelOnePower * increasePower);
                 hera.motorTwo.setPower(wheelTwoPower * increasePower);
             }
-            if(error > 0 && this.opMode.opModeIsActive()){
+            if (error > 0 && this.opMode.opModeIsActive()) {
                 hera.motorThree.setPower(wheelThreePower * powerChanger);
                 hera.motorFour.setPower(wheelFourPower * powerChanger);
-                double decreasePower = .9 - (error/100);
+                double decreasePower = .9 - (error / 100);
                 hera.motorOne.setPower(wheelOnePower * decreasePower);
                 hera.motorTwo.setPower(wheelTwoPower * decreasePower);
             }
@@ -148,19 +149,19 @@ public class DriveTrain {
             hera.motorThree.setPower(-wheelThreePower);
             hera.motorFour.setPower(-wheelFourPower);
             angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            error = startingOrientation - angles.firstAngle;
-            double powerChanger = (error/100)+1;
-            if(error > 0 && this.opMode.opModeIsActive()){
+            error = startingOrientation + angles.firstAngle;
+            double powerChanger = (error / 100) + 1;
+            if (error > 0 && this.opMode.opModeIsActive()) {
                 hera.motorThree.setPower(-wheelThreePower * powerChanger);
                 hera.motorFour.setPower(-wheelFourPower * powerChanger);
-                double increasePower = (Math.abs(error)/100) + 1;
+                double increasePower = (Math.abs(error) / 100) + 1;
                 hera.motorOne.setPower(-wheelOnePower * increasePower);
                 hera.motorTwo.setPower(-wheelTwoPower * increasePower);
             }
-            if(error < 0 && this.opMode.opModeIsActive()){
+            if (error < 0 && this.opMode.opModeIsActive()) {
                 hera.motorThree.setPower(-wheelThreePower * powerChanger);
                 hera.motorFour.setPower(-wheelFourPower * powerChanger);
-                double decreasePower = 1 - (error/100);
+                double decreasePower = 1 - (error / 100);
                 hera.motorOne.setPower(-wheelOnePower * decreasePower);
                 hera.motorTwo.setPower(-wheelTwoPower * decreasePower);
             }
@@ -187,93 +188,73 @@ public class DriveTrain {
         wheelTwoPower = power;
         wheelThreePower = power;
         wheelFourPower = power;
+        double direction;
+        if (degreesToTurn > 0) {
+            direction = 1;
+        } else {
+            direction = -1;
+        }
         showData("Turn status: ", "Entered turn method");
         telemetry.addData("Degrees to Turn: ", degreesToTurn);
         Orientation angles;
         angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double currentAngleIn360;
-        if(angles.firstAngle <=0){
+        if (angles.firstAngle <= 0) {
             currentAngleIn360 = angles.firstAngle + 360; //puts starting angle in terms of 360 degree circle (always positive)
-        }
-        else{
+        } else {
             currentAngleIn360 = angles.firstAngle;
         }
         showData("Turn Info", "current angle: " + currentAngleIn360);
         double targetAngle = currentAngleIn360 + degreesToTurn; // calculates angle the robot is trying to turn to
-        if(targetAngle > 360){
+        if (targetAngle > 360) {
             targetAngle -= 360; //keeps target angle within 1-360 degree range
         }
         showData("Turn Info", "target angle: " + targetAngle);
         double degreesLeftToTurn = targetAngle - currentAngleIn360;
-        if(degreesLeftToTurn < -180){
+        if (degreesLeftToTurn < -180) {
             degreesLeftToTurn += 360; // makes sure robot always tries to turn shortest distance between it and the target angle
-        }
-        else if(degreesLeftToTurn > 180){
-            degreesLeftToTurn -=360;
+        } else if (degreesLeftToTurn > 180) {
+            degreesLeftToTurn -= 360;
         }
         showData("Turn Info", "Degrees Left to turn: " + degreesLeftToTurn);
-        if (degreesLeftToTurn < 0) {
-            while ((degreesLeftToTurn <= 0) && this.opMode.opModeIsActive()) {
-                double generalPower = (degreesToTurn - angles.firstAngle)/(degreesToTurn);
-                if (generalPower < 0.5) {
-                    generalPower = 0.5;
-                }
-                showData("General power: ", ""+ generalPower);
-                hera.motorOne.setPower(generalPower * wheelOnePower);
-                hera.motorTwo.setPower(generalPower * wheelTwoPower);
-                hera.motorThree.setPower(-1 * generalPower * wheelThreePower);
-                hera.motorFour.setPower(-1 * generalPower * wheelFourPower);
-                showData("wheelPowers: ", "" + (generalPower * wheelOnePower) + ", " + (generalPower * wheelTwoPower)
-                                        + ", " + (-1 * generalPower * wheelThreePower)  + ", " +(-1 * generalPower * wheelFourPower));
-                angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                if(angles.firstAngle <=0){
-                    currentAngleIn360 = angles.firstAngle + 360; //puts current angle in terms of 360 degree circle (always positive)
-                }
-                else{
-                    currentAngleIn360 = angles.firstAngle;
-                }
-                degreesLeftToTurn = targetAngle - currentAngleIn360;
-                if(degreesLeftToTurn < -180){
-                    degreesLeftToTurn += 360; // makes sure robot always tries to turn shortest distance between it and the target angle
-                }
-                else if(degreesLeftToTurn > 180){
-                    degreesLeftToTurn -=360;
-                }
-                String turnInfo = "angles: " + angles.firstAngle + ", " + angles.secondAngle + ", " + angles.thirdAngle;
-                showData("Turning", turnInfo);
-                showData("Turn Info", "degrees Left To Turn: "+degreesLeftToTurn);
+        while ((Math.abs(degreesLeftToTurn) > 1) && this.opMode.opModeIsActive()) {
+            double generalPower = degreesLeftToTurn / (degreesToTurn);
+            if (generalPower < 0.3) {
+                generalPower = 0.3;
             }
-        } else if (degreesLeftToTurn > 0){ // changed the if statement so that it will keep turning back and forth until it reaches the target angle
-            while ((degreesLeftToTurn >= 0) && this.opMode.opModeIsActive()) {
-                double generalPower = (degreesToTurn - angles.firstAngle)/(degreesToTurn);
-                if (generalPower < 0.5) {
-                    generalPower = 0.5;
-                }
-                hera.motorOne.setPower(-1 * generalPower * wheelOnePower);
-                hera.motorTwo.setPower(-1 * generalPower * wheelTwoPower);
-                hera.motorThree.setPower(generalPower * wheelThreePower);
-                hera.motorFour.setPower(generalPower * wheelFourPower);
-                angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                if(angles.firstAngle <=0){
-                    currentAngleIn360 = angles.firstAngle + 360; //puts starting angle in terms of 360 degree circle (always positive)
-                }
-                else{
-                    currentAngleIn360 = angles.firstAngle;
-                }
-                degreesLeftToTurn = targetAngle - currentAngleIn360;
-                if(degreesLeftToTurn < -180){
-                    degreesLeftToTurn += 360; // makes sure robot always tries to turn shortest distance between it and the target angle
-                }
-                else if(degreesLeftToTurn > 180){
-                    degreesLeftToTurn -=360;
-                }
-                showData("DegreesLeftToTurn", degreesLeftToTurn+"");
-                String turnInfo = "angles: " + angles.firstAngle + ", " + angles.secondAngle + ", " + angles.thirdAngle;
-                showData("Turning", turnInfo);
+            showData("General Power", "" + generalPower);
+            double calculatedTurnPowerOne = generalPower * wheelOnePower * -1 * direction;
+            double calculatedTurnPowerTwo = generalPower * wheelOnePower * -1 * direction;
+            double calculatedTurnPowerThree = direction * generalPower * wheelThreePower;
+            double calculatedTurnPowerFour = direction * generalPower * wheelThreePower;
+            hera.motorOne.setPower(calculatedTurnPowerOne);
+            hera.motorTwo.setPower(calculatedTurnPowerTwo);
+            hera.motorThree.setPower(calculatedTurnPowerThree);
+            hera.motorFour.setPower(calculatedTurnPowerFour);
+            showData("wheelPowers: ", "" + calculatedTurnPowerOne + ", " + calculatedTurnPowerTwo
+                    + ", " + calculatedTurnPowerThree + ", " + calculatedTurnPowerFour);
+            angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            if (angles.firstAngle <= 0) {
+                currentAngleIn360 = angles.firstAngle + 360; //puts current angle in terms of 360 degree circle (always positive)
+            } else {
+                currentAngleIn360 = angles.firstAngle;
+            }
+            degreesLeftToTurn = targetAngle - currentAngleIn360;
+            if (degreesLeftToTurn < -180) {
+                degreesLeftToTurn += 360; // makes sure robot always tries to turn shortest distance between it and the target angle
+            } else if (degreesLeftToTurn > 180) {
+                degreesLeftToTurn -= 360;
+            }
+            String turnInfo = "angles: " + angles.firstAngle + ", " + angles.secondAngle + ", " + angles.thirdAngle;
+            showData("Turning", turnInfo);
+            showData("Turn Info", "degrees Left To Turn: " + degreesLeftToTurn);
+            if (degreesLeftToTurn > 0) {
+                direction = 1;
+            } else if(degreesLeftToTurn < 0) {
+                direction = -1;
             }
         }
         this.stop();
-
     }
 
     public void goLeft(double inches, double power) {
@@ -347,7 +328,7 @@ public class DriveTrain {
         double rx = gamepad1.right_stick_x;
         double directionalMultiplier = 1;
 
-        showData("rx value","" + rx);
+        showData("rx value", "" + rx);
 
         hera.motorOne.setPower(directionalMultiplier * (y + x + rx));
         hera.motorTwo.setPower(directionalMultiplier * (y - x + rx));

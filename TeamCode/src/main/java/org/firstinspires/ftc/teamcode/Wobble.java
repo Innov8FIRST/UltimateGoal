@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -27,9 +29,13 @@ public class Wobble {
 
     public void drop() {
         this.hera.wobbleDropper.setPosition(DROPPER_UP);
+        showData("Wobble Drop Status", "wobble has been dropped!");
     }
 
-    public void reset() { this.hera.wobbleDropper.setPosition(DROPPER_DOWN); }
+    public void reset() {
+        this.hera.wobbleDropper.setPosition(DROPPER_DOWN);
+        showData("Wobble Drop Status", "wobble dropped has been reset");
+    }
 
     public void teleopUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         if (gamepad1.left_bumper || gamepad2.left_bumper) {
@@ -59,5 +65,10 @@ public class Wobble {
         if (gamepad1.dpad_down || gamepad2.dpad_down) {
             this.hera.wobbleDropper.setPosition(DROPPER_DOWN);
         }
+    }
+    public void showData(String caption, String value) {
+        this.telemetry.addData(caption, value);
+        this.telemetry.update();
+        Log.d(caption, value);
     }
 }
