@@ -108,12 +108,13 @@ public class Hera {
             if (position == RingPosition.ONE) {
                 // Drive to 2nd square
                 showData("Step Nine a ", "take it back now ya'll");
+                driveTrain.turn(-5, defaultPower);
                 driveTrain.goBackward(8*12, defaultPower);
                 showData("Step Ten a ", "drop it like it's hot");
                 wobble.drop();
                 // Park over line
                 showData("Step Eleven a", "Jeevan goes forward 28 inches");
-                driveTrain.goForward(28, defaultPower);
+                driveTrain.goForward(20, defaultPower);
                 showData("Step Twelve a", "wobble dropper RESET whoop");
                 wobble.reset();
                 showData("Ring Position", "One");

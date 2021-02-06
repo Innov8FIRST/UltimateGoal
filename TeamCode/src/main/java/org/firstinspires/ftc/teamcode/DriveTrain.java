@@ -151,19 +151,19 @@ public class DriveTrain {
             angles = hera.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             error = startingOrientation + angles.firstAngle;
             double powerChanger = (error / 100) + 1;
-            if (error > 0 && this.opMode.opModeIsActive()) {
-                hera.motorThree.setPower(-wheelThreePower * powerChanger);
-                hera.motorFour.setPower(-wheelFourPower * powerChanger);
-                double increasePower = (Math.abs(error) / 100) + 1;
-                hera.motorOne.setPower(-wheelOnePower * increasePower);
-                hera.motorTwo.setPower(-wheelTwoPower * increasePower);
-            }
             if (error < 0 && this.opMode.opModeIsActive()) {
-                hera.motorThree.setPower(-wheelThreePower * powerChanger);
-                hera.motorFour.setPower(-wheelFourPower * powerChanger);
+                hera.motorOne.setPower(-wheelOnePower * powerChanger);
+                hera.motorTwo.setPower(-wheelTwoPower * powerChanger);
+                double increasePower = (Math.abs(error) / 100) + 1;
+                hera.motorThree.setPower(-wheelThreePower * increasePower);
+                hera.motorFour.setPower(-wheelFourPower * increasePower);
+            }
+            if (error > 0 && this.opMode.opModeIsActive()) {
+                hera.motorOne.setPower(-wheelOnePower * powerChanger);
+                hera.motorTwo.setPower(-wheelTwoPower * powerChanger);
                 double decreasePower = 1 - (error / 100);
-                hera.motorOne.setPower(-wheelOnePower * decreasePower);
-                hera.motorTwo.setPower(-wheelTwoPower * decreasePower);
+                hera.motorThree.setPower(-wheelThreePower * decreasePower);
+                hera.motorFour.setPower(-wheelFourPower * decreasePower);
             }
             showData("StartPosition", "" + startPosition);
             showData("EndPosition", "" + endPosition);
