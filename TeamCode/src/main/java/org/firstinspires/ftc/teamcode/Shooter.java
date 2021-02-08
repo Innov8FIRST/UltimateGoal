@@ -17,9 +17,11 @@ public class Shooter {
     public static double RINGPUSHER_LOAD = .5;
     public static double RINGPUSHER_LOAD_TELEOP = 0.6;
     public static double RINGPUSHER_SHOOT = .05;
-    public double shootVelocity = 1750; // middle goal: 1600 if shooting from the back wall
+    public static double SHOOT_VELOCITY = 1750; // middle goal: 1600 if shooting from the back wall
     public long postShotTime = 0;
+
     private enum ShootState {LOADING, SHOOTING, SETTING_CHILL_TIME, CHILLING}
+
     public ShootState shooterState = ShootState.LOADING;
 
     public Shooter(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {
@@ -32,15 +34,16 @@ public class Shooter {
     public void shoot() {
         this.hera.ringPusher.setPosition(RINGPUSHER_SHOOT);
         postShotTime = System.currentTimeMillis() + 1000;
-        while ((System.currentTimeMillis() < postShotTime) && this.opMode.opModeIsActive()){}
+        while ((System.currentTimeMillis() < postShotTime) && this.opMode.opModeIsActive()) {
+        }
         this.hera.ringPusher.setPosition(RINGPUSHER_LOAD);
         showData("Shoot status", "Shooting");
-        }
+    }
 
 
     public void teleopUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         if (gamepad2.a) {
-            this.hera.shooterMotor.setVelocity(shootVelocity);
+            this.startShooter();
         }
 
         if (gamepad2.x) {
@@ -105,6 +108,10 @@ public class Shooter {
         }
 
 
+    }
+
+    public void startShooter() {
+        this.hera.shooterMotor.setVelocity(SHOOT_VELOCITY);
     }
 
     public void showData(String caption, String value) {
