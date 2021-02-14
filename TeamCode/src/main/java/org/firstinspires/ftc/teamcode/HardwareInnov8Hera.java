@@ -84,7 +84,7 @@ public class HardwareInnov8Hera {
         ringTouchSensor = this.hwMap.get(TouchSensor.class, "ringTouchMotor");
 
         // Using REV motors
-        motorOne.setDirection(DcMotor.Direction.FORWARD);
+        motorOne.setDirection(DcMotor.Direction.REVERSE);
         motorTwo.setDirection(DcMotor.Direction.REVERSE);
         motorThree.setDirection(DcMotor.Direction.FORWARD);
         motorFour.setDirection(DcMotor.Direction.FORWARD);
