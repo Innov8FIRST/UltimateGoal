@@ -70,13 +70,12 @@ public class Hera {
             driveTrain.goForward(12);
             driveTrain.turn(-90);
             */
-            //driveTrain.goForward(48, defaultPower);
+            driveTrain.goForward(24, defaultPower);
             this.opMode.sleep(2000);
-//            driveTrain.goBackward(48, defaultPower);
-            wobble.drop();
-//            driveTrain.turn(15);
-//            this.opMode.sleep(2000);
-//            driveTrain.turn(-15);
+            driveTrain.goBackward(24, defaultPower);
+            driveTrain.turn(15, defaultPower);
+            this.opMode.sleep(2000);
+            driveTrain.turn(-15, defaultPower);
         }
     }
 
@@ -85,6 +84,22 @@ public class Hera {
         if (this.opMode.opModeIsActive()) {
             position = openCV.getRingNumber();
             this.autoShoot();
+            long startTime = System.currentTimeMillis();
+            long endTime = startTime + 1500;
+            while((!this.hwmap.ringTouchSensor.isPressed() && System.currentTimeMillis()<endTime)&&this.opMode.opModeIsActive()) {
+                showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
+                showData("CurrentTimeinMillis", "" + System.currentTimeMillis());
+                showData("EndTime", "" + endTime);
+                this.hwmap.conveyerMotor.setPower(-.6);
+            }
+            showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
+            this.hwmap.conveyerMotor.setPower(0);
+            this.opMode.sleep(500);
+            this.driveTrain.turn(-5, defaultPower);
+            this.opMode.sleep(1000);
+            shooter.shoot();
+            this.opMode.sleep(750);
+            this.driveTrain.turn(-5, defaultPower);
             showData("Step Eight: ", "" + position);
             if (position == RingPosition.ONE) {
                 // Drive to 2nd square
@@ -143,14 +158,14 @@ public class Hera {
         showData("Step Three: ", "Go backwards");
         driveTrain.goBackward(3, defaultPower);
         showData("Step Four: ", "Turn 7 degrees");
-        driveTrain.turn(10, defaultPower);
+        driveTrain.turn(14, defaultPower);
         showData("Step Five: ", "SHOOT");
         this.opMode.sleep(2000);
         shooter.shoot();
         showData("Step Six: ", "Beddy Bye");
         this.opMode.sleep(2000);
         showData("Step Seven: ", "Turn -7 degrees");
-        driveTrain.turn(-10, defaultPower);
+        //driveTrain.turn(-10, defaultPower);
     }
 
     public void redAutoShootAndPark() {
