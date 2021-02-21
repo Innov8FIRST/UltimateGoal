@@ -26,7 +26,7 @@ public class Hera {
     Gamepad gamepad1 = new Gamepad();
     Gamepad gamepad2 = new Gamepad();
     HardwareInnov8Hera hwmap;
-    double defaultPower = 0.4;
+    double defaultPower = 0.3;
 
     public Hera(Telemetry telemetry, HardwareMap hwmap, LinearOpMode opMode) {
         this.opMode = opMode;
@@ -49,8 +49,7 @@ public class Hera {
         this.telemetry.update();
     }
 
-    public void teleop(Gamepad gamepad1, Gamepad gamepad2) {
-
+    public void teleop(Gamepad gamepad1, Gamepad gamepad2){
         while (this.opMode.opModeIsActive()) {
             this.telemetry.addData(HERA_CAPTION, "teleop-ing");
             driveTrain.teleopUpdate(gamepad1, gamepad2);
@@ -60,6 +59,7 @@ public class Hera {
             wobble.teleopUpdate(gamepad1, gamepad2);
             this.telemetry.update();
         }
+
     }
 
 
@@ -85,7 +85,7 @@ public class Hera {
             position = openCV.getRingNumber();
             this.autoShoot();
             long startTime = System.currentTimeMillis();
-            long endTime = startTime + 1500;
+            long endTime = startTime + 2000;
             while((!this.hwmap.ringTouchSensor.isPressed() && System.currentTimeMillis()<endTime)&&this.opMode.opModeIsActive()) {
                 showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
                 showData("CurrentTimeinMillis", "" + System.currentTimeMillis());
@@ -93,11 +93,11 @@ public class Hera {
                 this.hwmap.conveyerMotor.setPower(-.6);
             }
             showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
-            this.hwmap.conveyerMotor.setPower(0);
             this.opMode.sleep(500);
-            this.driveTrain.turn(-5, defaultPower);
+            this.driveTrain.turn(-3, defaultPower);
             this.opMode.sleep(1000);
             shooter.shoot();
+            this.hwmap.conveyerMotor.setPower(0);
             this.opMode.sleep(750);
             this.driveTrain.turn(-5, defaultPower);
             showData("Step Eight: ", "" + position);
@@ -140,9 +140,9 @@ public class Hera {
                 // Drive to 1st square
                 driveTrain.goForward(5, defaultPower);
                 driveTrain.goRight(5, defaultPower);
-                this.driveTrain.goBackward(55, defaultPower);
+                this.driveTrain.goBackward(74, defaultPower);
                 this.opMode.sleep(1500);
-                this.driveTrain.goLeft(3.1, defaultPower);
+                driveTrain.goLeft(3, defaultPower);
                 this.opMode.sleep(1500);
                 wobble.drop();
                 this.opMode.sleep(1000);
@@ -158,7 +158,7 @@ public class Hera {
         showData("Step Three: ", "Go backwards");
         driveTrain.goBackward(3, defaultPower);
         showData("Step Four: ", "Turn 7 degrees");
-        driveTrain.turn(14, defaultPower);
+        driveTrain.turn(17, defaultPower);
         showData("Step Five: ", "SHOOT");
         this.opMode.sleep(2000);
         shooter.shoot();
@@ -173,7 +173,8 @@ public class Hera {
             this.autoShoot();
             driveTrain.goForward(5, defaultPower);
             driveTrain.goRight(5, defaultPower);
-            this.driveTrain.goBackward(63, defaultPower);
+            this.opMode.sleep(1000);
+            this.driveTrain.goBackward(74, defaultPower);
             wobble.drop();
 
         }
