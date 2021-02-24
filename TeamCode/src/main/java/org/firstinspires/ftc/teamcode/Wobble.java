@@ -48,14 +48,18 @@ public class Wobble {
 
         if (Math.abs(gamepad1.left_trigger) > .5 || Math.abs(gamepad2.left_trigger) > .5) {
             this.hera.wobbleArm.setPower(.2);
+            showData("current position left trigger", "" + this.hera.wobbleArm.getCurrentPosition());
         }
 
         else if (Math.abs(gamepad1.right_trigger) > .5 || Math.abs(gamepad2.right_trigger) > .5) {
             this.hera.wobbleArm.setPower(-.2);
+            showData("current position right trigger", "" + this.hera.wobbleArm.getCurrentPosition());
+
         }
 
         else {
             this.hera.wobbleArm.setPower(0);
+            showData("current position when stopped", "" + this.hera.wobbleArm.getCurrentPosition());
         }
 
         if (gamepad1.dpad_up || gamepad2.dpad_up) {
