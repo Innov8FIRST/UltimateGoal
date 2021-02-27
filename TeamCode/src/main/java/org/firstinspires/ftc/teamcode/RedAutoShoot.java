@@ -11,7 +11,7 @@ public class RedAutoShoot extends LinearOpMode
     public void runOpMode() throws InterruptedException {
         Hera hera = new Hera(telemetry, hardwareMap, this);
         waitForStart();
-        hera.redAutoShoot();
+        hera.rightRedLineAuto();
 
     }
 }

@@ -16,7 +16,7 @@ public class Wobble {
 
     public static double DROPPER_DOWN = .9;
     public static double DROPPER_UP = 0;
-    public static double GRABBER_DOWN = 1;
+    public static double GRABBER_OPEN = 1;
     public static double GRABBER_CLOSE = 0;
 
 
@@ -27,6 +27,16 @@ public class Wobble {
         this.telemetry = telemetry;
     }
 
+    public void grab(){
+        this.hera.wobbleGrabber.setPosition(GRABBER_CLOSE);
+        showData("Wobble Grab Status", "wobble has been grabbed!");
+
+    }
+
+    public void release(){
+        this.hera.wobbleGrabber.setPosition(GRABBER_OPEN);
+        showData("Wobble Grab Status", "wobble has been let go of!");
+    }
     public void drop() {
         this.hera.wobbleDropper.setPosition(DROPPER_UP);
         showData("Wobble Drop Status", "wobble has been dropped!");
@@ -43,7 +53,7 @@ public class Wobble {
         }
 
         if (gamepad1.right_bumper || gamepad2.right_bumper) {
-            this.hera.wobbleGrabber.setPosition(GRABBER_DOWN);
+            this.hera.wobbleGrabber.setPosition(GRABBER_OPEN);
         }
 
         if (Math.abs(gamepad1.left_trigger) > .5 || Math.abs(gamepad2.left_trigger) > .5) {

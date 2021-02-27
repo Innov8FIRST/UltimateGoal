@@ -79,6 +79,69 @@ public class Hera {
         }
     }
 
+    public void wobbleTester(){
+        if(this.opMode.opModeIsActive()){
+            this.wobble.release();
+            this.opMode.sleep(1000);
+            this.driveTrain.turn(50, 0.2);
+            this.opMode.sleep(1000);
+            this.wobble.grab();
+            this.driveTrain.turn(-50, 0.2);
+
+        }
+    }
+
+    public void rightRedLineAuto(){
+        if(this.opMode.opModeIsActive()){
+            position = openCV.getRingNumber();
+            this.shooter.startShooter();
+            this.driveTrain.goBackward(18+24, 0.3);
+            this.opMode.sleep(100);
+            this.driveTrain.turn(3, 0.3);
+            this.opMode.sleep(100);
+            this.shooter.shoot();
+            this.opMode.sleep(500);
+            long startTime = System.currentTimeMillis();
+            long endTime = startTime + 2000;
+            while((!this.hwmap.ringTouchSensor.isPressed() && System.currentTimeMillis()<endTime)&&this.opMode.opModeIsActive()) {
+                showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
+                showData("CurrentTimeinMillis", "" + System.currentTimeMillis());
+                showData("EndTime", "" + endTime);
+                this.hwmap.conveyerMotor.setPower(-.6);
+            }
+            showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
+            shooter.shoot();
+            this.hwmap.conveyerMotor.setPower(0);
+            this.opMode.sleep(750);
+            this.driveTrain.turn(-5, 0.3);
+            if(position == RingPosition.ONE){ // drive to 2nd square
+                this.driveTrain.goBackward(30, 0.3);
+                this.opMode.sleep(100);
+                this.driveTrain.turn(90, 0.3);
+                this.opMode.sleep(100);
+                this.driveTrain.goBackward(6, 0.3);
+                this.opMode.sleep(100);
+                this.wobble.drop();
+                this.opMode.sleep(100);
+                this.driveTrain.goRight(6, 0.3);
+            }
+            else if(position == RingPosition.FOUR){
+                this.driveTrain.goBackward(56, 0.3);
+                this.opMode.sleep(500);
+                this.wobble.drop();
+                this.opMode.sleep(500);
+                this.driveTrain.goForward(48, 0.4);
+            }
+            else{
+                this.driveTrain.goBackward(12, 0.3);
+                this.opMode.sleep(500);
+                this.wobble.drop();
+                this.opMode.sleep(500);
+                this.driveTrain.goRight(3, 0.3);
+            }
+        }
+    }
+
     public void redAutoShoot() {
 
         if (this.opMode.opModeIsActive()) {
