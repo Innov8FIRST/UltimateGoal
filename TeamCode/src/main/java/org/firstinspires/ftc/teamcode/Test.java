@@ -10,6 +10,6 @@ public class Test extends LinearOpMode
     public void runOpMode() throws InterruptedException {
         Hera hera = new Hera(telemetry, hardwareMap, this);
         waitForStart();
-        hera.wobbleTester();
+        hera.forwardTurn();
     }
 }

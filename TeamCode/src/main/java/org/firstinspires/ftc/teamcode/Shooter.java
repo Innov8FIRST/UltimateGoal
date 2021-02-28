@@ -15,8 +15,8 @@ public class Shooter {
     LinearOpMode opMode;
 
     public static double RINGPUSHER_LOAD = .5;
-    public static double RINGPUSHER_LOAD_TELEOP = 0.6;
-    public static double RINGPUSHER_SHOOT = .05;
+    public static double RINGPUSHER_LOAD_TELEOP = 0.8;
+    public static double RINGPUSHER_SHOOT = .3;
     public static double SHOOT_VELOCITY = 1750; // middle goal: 1600 if shooting from the back wall
     public long postShotTime = 0;
 

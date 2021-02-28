@@ -30,7 +30,7 @@ public class DriveTrain {
     private static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
     private static double TICKS_IN_A_ROTATION = 28 * 40; //CPR = 28, 40:1 gearbox on motor
     private static double GEAR_RATIO = 0.5; // 2:1 gear ratio (2 wheel rotations for one motor rotation)
-    private static final double TICKS_IN_AN_INCH = ((TICKS_IN_A_ROTATION * GEAR_RATIO) / WHEEL_CIRCUMFERENCE); // The number of encoder ticks per inch for our wheels
+    private static final double TICKS_IN_AN_INCH = ((TICKS_IN_A_ROTATION * GEAR_RATIO) / WHEEL_CIRCUMFERENCE) * 18/23.5; // The number of encoder ticks per inch for our wheels
     public static double SIDE_TICKS_IN_INCH = (360 / 6); // The number of encoder ticks for one inch while travelling sideways, change later
 
     public DriveTrain(Telemetry telemetry, HardwareInnov8Hera hera, LinearOpMode opMode) {
@@ -318,10 +318,10 @@ public class DriveTrain {
     public void teleopUpdate(Gamepad gamepad1, Gamepad gamepad2) {
 
         showData("DRIVE_TRAIN_CAPTION", "Teleop updated");
-        telemetry.addData("1_left_stick_x", gamepad1.left_stick_x);
-        telemetry.addData("1_left_stick_y", gamepad1.left_stick_y);
-        telemetry.addData("1_right_stick_x", gamepad1.right_stick_x);
-        telemetry.addData("1_right_stick_y", gamepad1.right_stick_y);
+        showData("1_left_stick_x", ""+gamepad1.left_stick_x);
+        showData("1_left_stick_y", ""+gamepad1.left_stick_y);
+        showData("1_right_stick_x", ""+gamepad1.right_stick_x);
+        showData("1_right_stick_y", ""+gamepad1.right_stick_y);
 
         double y = -gamepad1.left_stick_y; // Remember, this is reversed!
         double x = gamepad1.left_stick_x * 1.5; // 1.5 is to counteract imperfect strafing
@@ -329,6 +329,8 @@ public class DriveTrain {
         double directionalMultiplier = 1;
 
         showData("rx value", "" + rx);
+        showData("x value", "" + x);
+        showData("y value", "" + y);
 
         hera.motorOne.setPower(directionalMultiplier * (y + x + rx));
         hera.motorTwo.setPower(directionalMultiplier * (y - x + rx));
