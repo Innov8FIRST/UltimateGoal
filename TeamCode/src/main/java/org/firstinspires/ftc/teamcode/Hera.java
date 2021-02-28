@@ -70,23 +70,34 @@ public class Hera {
             driveTrain.goForward(12);
             driveTrain.turn(-90);
             */
-            driveTrain.goForward(24, defaultPower);
+            driveTrain.goForward(24, 0.3);
             this.opMode.sleep(2000);
-            driveTrain.goBackward(24, defaultPower);
-            driveTrain.turn(15, defaultPower);
+            driveTrain.goBackward(24, 0.3);
+            driveTrain.turn(15, 0.3);
             this.opMode.sleep(2000);
-            driveTrain.turn(-15, defaultPower);
+            driveTrain.turn(-15, 0.3);
         }
     }
 
     public void wobbleTester(){
         if(this.opMode.opModeIsActive()){
+            double armStartPos = this.hwmap.wobbleArm.getCurrentPosition();
+            double armEndPos = armStartPos + 330;
+            while(this.hwmap.wobbleArm.getCurrentPosition() < armEndPos && this.opMode.opModeIsActive()){
+                this.hwmap.wobbleArm.setPower(0.2);
+                showData("wobble arm position", "" + this.hwmap.wobbleArm.getCurrentPosition());
+            }
+            this.hwmap.wobbleArm.setPower(0);
             this.wobble.release();
             this.opMode.sleep(1000);
             this.driveTrain.turn(50, 0.2);
             this.opMode.sleep(1000);
             this.wobble.grab();
             this.driveTrain.turn(-50, 0.2);
+            while(this.hwmap.wobbleArm.getCurrentPosition() > armStartPos){
+                this.hwmap.wobbleArm.setPower(-0.2);
+            }
+            this.hwmap.wobbleArm.setPower(0);
 
         }
     }
@@ -113,7 +124,7 @@ public class Hera {
             shooter.shoot();
             this.hwmap.conveyerMotor.setPower(0);
             this.opMode.sleep(750);
-            this.driveTrain.turn(-5, 0.3);
+            this.driveTrain.turn(-3, 0.3);
             if(position == RingPosition.ONE){ // drive to 2nd square
                 this.driveTrain.goBackward(30, 0.3);
                 this.opMode.sleep(100);
@@ -126,14 +137,14 @@ public class Hera {
                 this.driveTrain.goRight(6, 0.3);
             }
             else if(position == RingPosition.FOUR){
-                this.driveTrain.goBackward(56, 0.3);
+                this.driveTrain.goBackward(62, 0.3);
                 this.opMode.sleep(500);
                 this.wobble.drop();
                 this.opMode.sleep(500);
-                this.driveTrain.goForward(48, 0.4);
+                this.driveTrain.goForward(48, 0.3);
             }
             else{
-                this.driveTrain.goBackward(12, 0.3);
+                this.driveTrain.goBackward(18, 0.3);
                 this.opMode.sleep(500);
                 this.wobble.drop();
                 this.opMode.sleep(500);
