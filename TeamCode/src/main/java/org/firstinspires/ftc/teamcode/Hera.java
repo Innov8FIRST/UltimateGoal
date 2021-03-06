@@ -103,7 +103,7 @@ public class Hera {
             this.shooter.startShooter();
             this.driveTrain.goBackward(18+24, 0.3);
             this.opMode.sleep(100);
-            this.driveTrain.turn(5, 0.3);
+            this.driveTrain.turn(15, 0.3);
             this.opMode.sleep(100);
             this.shooter.shoot();
             this.opMode.sleep(500);
@@ -119,9 +119,9 @@ public class Hera {
             shooter.shoot();
             this.hwmap.conveyerMotor.setPower(0);
             this.opMode.sleep(750);
-            this.driveTrain.turn(-3, 0.3);
+            this.driveTrain.turn(-15, 0.3);
             if(position == RingPosition.ONE){ // drive to 2nd square
-                this.driveTrain.goBackward(30, 0.3);
+                this.driveTrain.goBackward(50, 0.3);
                 this.opMode.sleep(100);
                 this.driveTrain.turn(90, 0.3);
                 this.opMode.sleep(100);
@@ -132,14 +132,14 @@ public class Hera {
                 this.driveTrain.goRight(6, 0.3);
             }
             else if(position == RingPosition.FOUR){
-                this.driveTrain.goBackward(66, 0.3);
+                this.driveTrain.goBackward(98, 0.3);
                 this.opMode.sleep(500);
                 this.wobble.drop();
                 this.opMode.sleep(500);
-                this.driveTrain.goForward(44, 0.3);
+                this.driveTrain.goForward(38, 0.3);
             }
             else{
-                this.driveTrain.goBackward(18, 0.3);
+                this.driveTrain.goBackward(40, 0.3);
                 this.opMode.sleep(500);
                 this.wobble.drop();
                 this.opMode.sleep(500);

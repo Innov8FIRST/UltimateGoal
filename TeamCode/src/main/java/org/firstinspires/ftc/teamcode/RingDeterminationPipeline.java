@@ -22,13 +22,13 @@ public class RingDeterminationPipeline extends OpenCvPipeline
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(150,80); // 150, 170
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(140,80); // 150, 170
 
     static final int REGION_WIDTH = 35;
     static final int REGION_HEIGHT = 30;
 
     final int FOUR_RING_THRESHOLD = 152;
-    final int ONE_RING_THRESHOLD = 140;
+    final int ONE_RING_THRESHOLD = 135;
 
     Point region1_pointA = new Point(
             REGION1_TOPLEFT_ANCHOR_POINT.x,
@@ -72,6 +72,7 @@ public class RingDeterminationPipeline extends OpenCvPipeline
         inputToCb(input);
 
         avg1 = (int) Core.mean(region1_Cb).val[0];
+
 
         Imgproc.rectangle(
                 input, // Buffer to draw on
