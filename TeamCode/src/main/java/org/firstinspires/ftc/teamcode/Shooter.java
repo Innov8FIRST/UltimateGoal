@@ -14,7 +14,7 @@ public class Shooter {
     HardwareInnov8Hera hera;
     LinearOpMode opMode;
 
-    public static double RINGPUSHER_LOAD = .5;
+    public static double RINGPUSHER_LOAD = .53;
     public static double RINGPUSHER_LOAD_TELEOP = 0.8;
     public static double RINGPUSHER_SHOOT = .3;
     public static double SHOOT_VELOCITY = 1750; // middle goal: 1600 if shooting from the back wall
@@ -65,6 +65,11 @@ public class Shooter {
             shooterState = ShootState.SHOOTING;
         }
 
+        if (gamepad1.b) {
+            hera.ringPusher.setPosition(RINGPUSHER_LOAD_TELEOP);
+            shooterState = ShootState.LOADING;
+        }
+
         if (gamepad1.dpad_left && hera.ringPusher.getPosition() < 1) {
             hera.ringPusher.setPosition(hera.ringPusher.getPosition() + .05);
         }
@@ -90,7 +95,7 @@ public class Shooter {
                 showData("RING_PUSHER: ", "Shooting");
                 break;
             case SETTING_CHILL_TIME:
-                postShotTime = System.currentTimeMillis() + 2000;
+                postShotTime = System.currentTimeMillis() + 1500;
                 shooterState = ShootState.CHILLING;
                 showData("RING_PUSHER: ", "Setting chill time");
                 break;
