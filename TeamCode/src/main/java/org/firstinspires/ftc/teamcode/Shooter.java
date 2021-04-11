@@ -95,7 +95,7 @@ public class Shooter {
                 showData("RING_PUSHER: ", "Shooting");
                 break;
             case SETTING_CHILL_TIME:
-                postShotTime = System.currentTimeMillis() + 1500;
+                postShotTime = System.currentTimeMillis() + 1000;
                 shooterState = ShootState.CHILLING;
                 showData("RING_PUSHER: ", "Setting chill time");
                 break;

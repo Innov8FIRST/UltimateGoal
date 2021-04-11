@@ -102,11 +102,15 @@ public class Hera {
         if(this.opMode.opModeIsActive()){
             position = openCV.getRingNumber();
             this.shooter.startShooter();
+            showData("Now starting... ", "to go backwards!");
             this.driveTrain.goBackward(18+24, 0.3);
             this.opMode.sleep(100);
+            showData("Now starting...", "to turn!");
             this.driveTrain.turn(15, 0.3);
             this.opMode.sleep(300);
+            showData("Now starting... ", "to shoot!");
             this.shooter.shoot();
+            showData("Now starting... ", "the conveyor!");
             this.opMode.sleep(500);
             long startTime = System.currentTimeMillis();
             long endTime = startTime + 2000;
@@ -117,7 +121,17 @@ public class Hera {
                 this.hwmap.conveyerMotor.setPower(-.6);
             }
             showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
+            showData("Now starting... ", "to shoot ring #2!");
             shooter.shoot();
+
+            this.opMode.sleep(1000);
+            showData("Now starting... ", "to move that intake!");
+            this.hwmap.intakeMotor.setPower(.4);
+            this.opMode.sleep(1000);
+            showData("Now starting... ", "to shoot ring ring #3!");
+            shooter.shoot();
+
+            this.hwmap.intakeMotor.setPower(0);
             this.hwmap.conveyerMotor.setPower(0);
             this.opMode.sleep(750);
             this.driveTrain.turn(-15, 0.3);
@@ -153,6 +167,9 @@ public class Hera {
         if(this.opMode.opModeIsActive()) {
             position = openCV.getRingNumber();
             this.shooter.startShooter();
+            this.driveTrain.goBackward(6, 0.3);
+            this.opMode.sleep(200);
+            this.driveTrain.turn(-10, 0.3);
             this.driveTrain.goBackward(18 + 24, 0.3);
             this.opMode.sleep(100);
             this.driveTrain.turn(15, 0.3);
@@ -169,10 +186,19 @@ public class Hera {
             } //conveyor for 2nd shot
             showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
             shooter.shoot(); // 2nd shot
+
+            this.opMode.sleep(1000);
+            showData("Now starting... ", "to move that intake!");
+            this.hwmap.intakeMotor.setPower(.4);
+            this.opMode.sleep(2000);
+            showData("Now starting... ", "to shoot ring ring #3!");
+            shooter.shoot();
+
+            this.hwmap.intakeMotor.setPower(0);
             this.hwmap.conveyerMotor.setPower(0);
             //this.opMode.sleep(750);
             this.driveTrain.turn(-15, 0.3);
-            //this.opMode.sleep(500);
+            //this.opMode.sleep(500);adb
             this.driveTrain.goBackward(48, 0.3); //to 1st box
             this.opMode.sleep(100);
             this.wobble.drop(); //drop 1st wobble
@@ -189,11 +215,11 @@ public class Hera {
             } //lower wobble arm
             this.hwmap.wobbleArm.setPower(0);
             //this.opMode.sleep(1000);
-            this.driveTrain.turn(50, 0.3);
+            this.driveTrain.turn(30, 0.3);
             //this.opMode.sleep(1000);
             this.wobble.grab(); //grab 2nd wobble
             //this.opMode.sleep(200);
-            this.driveTrain.turn(-60, 0.3);
+            this.driveTrain.turn(-40, 0.3);
             //this.opMode.sleep(200);
             this.driveTrain.turn(180, 0.3);
             this.driveTrain.goLeft(4, 0.3);
@@ -220,6 +246,12 @@ public class Hera {
             this.driveTrain.turn(-3, defaultPower);
             this.opMode.sleep(1000);
             shooter.shoot();
+
+            this.hwmap.intakeMotor.setPower(.4);
+            this.opMode.sleep(1000);
+            shooter.shoot();
+
+            this.hwmap.intakeMotor.setPower(0);
             this.hwmap.conveyerMotor.setPower(0);
             this.opMode.sleep(750);
             this.driveTrain.turn(-5, defaultPower);
