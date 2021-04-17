@@ -74,30 +74,6 @@ public class Hera {
         }
     }
 
-    public void wobbleTester(){
-        if(this.opMode.opModeIsActive()){
-            double armStartPos = this.hwmap.wobbleArm.getCurrentPosition();
-            double armEndPos = armStartPos + 330;
-            while(this.hwmap.wobbleArm.getCurrentPosition() < armEndPos && this.opMode.opModeIsActive()){
-                this.hwmap.wobbleArm.setPower(0.2);
-                showData("wobble arm position", "" + this.hwmap.wobbleArm.getCurrentPosition());
-            }
-            this.hwmap.wobbleArm.setPower(0);
-            this.wobble.release();
-            this.opMode.sleep(1000);
-            this.driveTrain.turn(45, 0.2);
-            this.opMode.sleep(1000);
-            this.wobble.grab();
-            this.opMode.sleep(200);
-            this.driveTrain.turn(-45, 0.2);
-            while(this.hwmap.wobbleArm.getCurrentPosition() > armStartPos){
-                this.hwmap.wobbleArm.setPower(-0.2);
-            }
-            this.hwmap.wobbleArm.setPower(0);
-
-        }
-    }
-
     public void rightRedLineAuto(){
         if(this.opMode.opModeIsActive()){
             position = openCV.getRingNumber();
@@ -106,7 +82,7 @@ public class Hera {
             this.driveTrain.goBackward(18+24, 0.3);
             this.opMode.sleep(100);
             showData("Now starting...", "to turn!");
-            this.driveTrain.turn(15, 0.3);
+            this.driveTrain.turn(6, 0.3);
             this.opMode.sleep(300);
             showData("Now starting... ", "to shoot!");
             this.shooter.shoot();
@@ -166,73 +142,78 @@ public class Hera {
     public void twoWobbleTester(){
         if(this.opMode.opModeIsActive()) {
             position = openCV.getRingNumber();
-            this.shooter.startShooter();
-            this.driveTrain.goBackward(6, 0.3);
-            this.opMode.sleep(200);
-            this.driveTrain.turn(-10, 0.3);
-            this.driveTrain.goBackward(18 + 24, 0.3);
-            this.opMode.sleep(100);
-            this.driveTrain.turn(15, 0.3);
-            this.opMode.sleep(200);
-            this.shooter.shoot();
-            //this.opMode.sleep(500);
-            long startTime = System.currentTimeMillis();
-            long endTime = startTime + 2000;
-            while ((!this.hwmap.ringTouchSensor.isPressed() && System.currentTimeMillis() < endTime) && this.opMode.opModeIsActive()) {
-                showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
-                showData("CurrentTimeinMillis", "" + System.currentTimeMillis());
-                showData("EndTime", "" + endTime);
-                this.hwmap.conveyerMotor.setPower(-.6);
-            } //conveyor for 2nd shot
-            showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
-            shooter.shoot(); // 2nd shot
+            this.autoShootThree();
+            if(position == RingPosition.ONE){
+                this.driveTrain.goBackward(52, 0.3);
+                this.opMode.sleep(100);
+                this.driveTrain.turn(90, 0.3);
+                this.opMode.sleep(100);
+                this.driveTrain.goBackward(6, 0.3);
+                this.opMode.sleep(100);
+                this.wobble.drop();
+                this.opMode.sleep(100);
+                this.driveTrain.goRight(6, 0.3);
+            }
 
-            this.opMode.sleep(1000);
-            showData("Now starting... ", "to move that intake!");
-            this.hwmap.intakeMotor.setPower(.4);
-            this.opMode.sleep(2000);
-            showData("Now starting... ", "to shoot ring ring #3!");
-            shooter.shoot();
+            else if(position == RingPosition.FOUR){
+                this.driveTrain.goBackward(108, 0.3);
+                this.opMode.sleep(500);
+                this.wobble.drop();
+                this.opMode.sleep(500);
+                this.driveTrain.goForward(45, 0.3);
+            }
 
-            this.hwmap.intakeMotor.setPower(0);
-            this.hwmap.conveyerMotor.setPower(0);
-            //this.opMode.sleep(750);
-            this.driveTrain.turn(-15, 0.3);
-            //this.opMode.sleep(500);adb
-            this.driveTrain.goBackward(48, 0.3); //to 1st box
-            this.opMode.sleep(100);
-            this.wobble.drop(); //drop 1st wobble
-            this.driveTrain.goRight(3, 0.3);
-            this.opMode.sleep(200);
-            this.driveTrain.turn(155, 0.2);
-            this.driveTrain.goBackward(68, 0.3); //back to 2nd wobble
-            this.wobble.release();
-            double armStartPos = this.hwmap.wobbleArm.getCurrentPosition();
-            double armEndPos = armStartPos + 330;
-            while(this.hwmap.wobbleArm.getCurrentPosition() < armEndPos && this.opMode.opModeIsActive()){
-                this.hwmap.wobbleArm.setPower(0.2);
-                showData("wobble arm position", "" + this.hwmap.wobbleArm.getCurrentPosition());
-            } //lower wobble arm
-            this.hwmap.wobbleArm.setPower(0);
-            //this.opMode.sleep(1000);
-            this.driveTrain.turn(30, 0.3);
-            //this.opMode.sleep(1000);
-            this.wobble.grab(); //grab 2nd wobble
-            //this.opMode.sleep(200);
-            this.driveTrain.turn(-40, 0.3);
-            //this.opMode.sleep(200);
-            this.driveTrain.turn(180, 0.3);
-            this.driveTrain.goLeft(4, 0.3);
-            this.driveTrain.goBackward(60,3);
-            this.wobble.release(); //drop 2nd wobble
-            this.driveTrain.goRight(18, 0.3); //park on line
+            else{ // zero rings
+                //this.opMode.sleep(500);
+                this.driveTrain.goBackward(38, 0.3); //to 1st box
+                this.opMode.sleep(100);
+                this.wobble.drop(); //drop 1st wobble
+                this.driveTrain.goRight(3, 0.3);
+                this.opMode.sleep(200);
+                this.driveTrain.turn(163, 0.2);
+                this.driveTrain.goBackward(68, 0.3); //back to 2nd wobble
+                this.wobble.release();
+                double armStartPos = this.hwmap.wobbleArm.getCurrentPosition();
+                double armEndPos = armStartPos + 330;
+                while (this.hwmap.wobbleArm.getCurrentPosition() < armEndPos && this.opMode.opModeIsActive()) {
+                    this.hwmap.wobbleArm.setPower(0.2);
+                    showData("wobble arm position", "" + this.hwmap.wobbleArm.getCurrentPosition());
+                } //lower wobble arm
+                this.hwmap.wobbleArm.setPower(0);
+                //this.opMode.sleep(1000);
+                this.driveTrain.turn(30, 0.3);
+                //this.opMode.sleep(1000);
+                this.wobble.grab(); //grab 2nd wobble
+                //this.opMode.sleep(200);
+                this.driveTrain.turn(-40, 0.3);
+                //this.opMode.sleep(200);
+                this.driveTrain.turn(180, 0.3);
+                this.driveTrain.goLeft(4, 0.3);
+                this.driveTrain.goBackward(60, 3);
+                this.wobble.release(); //drop 2nd wobble
+                this.driveTrain.goRight(18, 0.3); //park on line
+            }
         }
     }
     public void redAutoShoot() {
-
+        //goes for powershot targets
         if (this.opMode.opModeIsActive()) {
             position = openCV.getRingNumber();
-            this.autoShoot();
+
+            showData("Step One: ", "Start shooter motor");
+            this.shooter.startShooter();
+            showData("Step Three: ", "Go backwards");
+            driveTrain.goBackward(3, defaultPower);
+            showData("Step Four: ", "Turn 7 degrees");
+            driveTrain.turn(17, defaultPower);
+            showData("Step Five: ", "SHOOT");
+            this.opMode.sleep(2000);
+            shooter.shoot();
+            showData("Step Six: ", "Beddy Bye");
+            this.opMode.sleep(2000);
+            showData("Step Seven: ", "Turn -7 degrees");
+            //driveTrain.turn(-10, defaultPower);
+
             long startTime = System.currentTimeMillis();
             long endTime = startTime + 2000;
             while((!this.hwmap.ringTouchSensor.isPressed() && System.currentTimeMillis()<endTime)&&this.opMode.opModeIsActive()) {
@@ -307,25 +288,58 @@ public class Hera {
             }
         }
     }
-    public void autoShoot(){
-        showData("Step One: ", "Start shooter motor");
-        this.shooter.startShooter();
-        showData("Step Three: ", "Go backwards");
-        driveTrain.goBackward(3, defaultPower);
-        showData("Step Four: ", "Turn 7 degrees");
-        driveTrain.turn(17, defaultPower);
-        showData("Step Five: ", "SHOOT");
-        this.opMode.sleep(2000);
-        shooter.shoot();
-        showData("Step Six: ", "Beddy Bye");
-        this.opMode.sleep(2000);
-        showData("Step Seven: ", "Turn -7 degrees");
-        //driveTrain.turn(-10, defaultPower);
+    public void autoShootThree(){
+        if(this.opMode.opModeIsActive()) {
+            this.shooter.startShooter();
+            this.driveTrain.goBackward(6, 0.3);
+            this.opMode.sleep(200);
+            this.driveTrain.turn(6, 0.3);
+            this.driveTrain.goBackward(18 + 24, 0.3);
+            this.opMode.sleep(100);
+            this.driveTrain.turn(10, 0.3);
+            this.opMode.sleep(200);
+            this.shooter.shoot();
+            //this.opMode.sleep(500);
+            long startTime = System.currentTimeMillis();
+            long endTime = startTime + 2000;
+            while ((!this.hwmap.ringTouchSensor.isPressed() && System.currentTimeMillis() < endTime) && this.opMode.opModeIsActive()) {
+                showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
+                showData("CurrentTimeinMillis", "" + System.currentTimeMillis());
+                showData("EndTime", "" + endTime);
+                this.hwmap.conveyerMotor.setPower(-.6);
+            } //conveyor for 2nd shot
+            showData("touch sensor status", "" + this.hwmap.ringTouchSensor.isPressed());
+            shooter.shoot(); // 2nd shot
+
+            this.opMode.sleep(1000);
+            showData("Now starting... ", "to move that intake!");
+            this.hwmap.intakeMotor.setPower(.4);
+            this.opMode.sleep(2500);
+            showData("Now starting... ", "to shoot ring ring #3!");
+            shooter.shoot(); //3rd shot
+
+            this.hwmap.intakeMotor.setPower(0);
+            this.hwmap.conveyerMotor.setPower(0);
+            //this.opMode.sleep(750);
+            this.driveTrain.turn(-15, 0.3);
+        }
     }
 
     public void redAutoShootAndPark() {
         if (this.opMode.opModeIsActive()) {
-            this.autoShoot();
+            showData("Step One: ", "Start shooter motor");
+            this.shooter.startShooter();
+            showData("Step Three: ", "Go backwards");
+            driveTrain.goBackward(3, defaultPower);
+            showData("Step Four: ", "Turn 7 degrees");
+            driveTrain.turn(17, defaultPower);
+            showData("Step Five: ", "SHOOT");
+            this.opMode.sleep(2000);
+            shooter.shoot();
+            showData("Step Six: ", "Beddy Bye");
+            this.opMode.sleep(2000);
+            showData("Step Seven: ", "Turn -7 degrees");
+            //driveTrain.turn(-10, defaultPower);
             driveTrain.goForward(5, defaultPower);
             driveTrain.goRight(5, defaultPower);
             this.opMode.sleep(1000);
