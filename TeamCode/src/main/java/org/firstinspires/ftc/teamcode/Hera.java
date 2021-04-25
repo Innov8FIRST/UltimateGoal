@@ -138,7 +138,7 @@ public class Hera {
                 this.driveTrain.goRight(3, 0.4);
                 this.opMode.sleep(200);
                 this.driveTrain.turn(163, 0.3);
-                this.driveTrain.goBackward(68, 0.4); //back to 2nd wobble
+                this.driveTrain.goBackward(52, 0.4); //back to 2nd wobble
                 this.wobble.release();
                 double armStartPos = this.hwmap.wobbleArm.getCurrentPosition();
                 double armEndPos = armStartPos + 330;
@@ -151,14 +151,13 @@ public class Hera {
                 this.driveTrain.turn(30, 0.3);
                 this.opMode.sleep(500);
                 this.wobble.grab(); //grab 2nd wobble
-                //this.opMode.sleep(200);
+                this.opMode.sleep(200);
                 this.driveTrain.turn(-20, 0.3);
                 //this.opMode.sleep(200);
-                this.driveTrain.turn(160, 0.3);
-                this.driveTrain.goLeft(4, 0.3);
-                this.driveTrain.goBackward(60, .4);
+                this.driveTrain.turn(150, 0.3);
+                this.driveTrain.goBackward(50, .4);
                 this.wobble.release(); //drop 2nd wobble
-                this.driveTrain.goRight(8, 0.3); //park on line
+                this.driveTrain.turn(-3, 0.3); //park on line
             }
         }
     }
@@ -260,7 +259,7 @@ public class Hera {
             this.shooter.startShooter();
             this.driveTrain.goBackward(6, 0.3);
             this.opMode.sleep(200);
-            this.driveTrain.turn(8, 0.3);
+            this.driveTrain.turn(7, 0.3);
             this.driveTrain.goBackward(18 + 22, 0.3);
             this.opMode.sleep(100);
             this.driveTrain.turn(15, 0.3);
